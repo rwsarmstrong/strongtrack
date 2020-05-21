@@ -1,5 +1,5 @@
 # StrongTrack
-A python tool with facial landmark annotation and coefficient finder.
+Tools for facial landmark annotation and finding coefficents for animation.
 
 # Overview
 This is a python based solution for finding coefficients for facial animation from RGB video. It was written for the purpose of exporting coefficients that can be later exported as a numpy save file (for importing into Blender for example) but can also stream into Unreal Engine (or elsewhere) via OSC.
