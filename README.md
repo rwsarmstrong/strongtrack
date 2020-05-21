@@ -22,5 +22,14 @@ As well as these python libraries
 Assuming you have python and the libraries listed above installed correctly run python strongtrack.py and you should be presented with the interface as shown above.
 
 # Example Usage
-Video the subject pulling a series of keyposes. Neutral, jaw fully open, closed smile, lips funnel, lip pucker, brow up, brow down, eye closed. These keyposes are useful for quickly training a landmark model. Upon opening this video with StrongTrack you'll be presented with the video alongside a generic unmatched set of facial landmarks. Pause the video with the SPACE KEY at the neutral pose and place the landmarks at the corresponding place upon the face. Once you're happy with the placement add this to the training set with the F KEY. For this initial entry the model will then train the predictor automatically. Head to the jaw open frame and repeat, hitting the T KEY whenever you want to train 
+Video the subject pulling a series of keyposes. Neutral, jaw fully open, closed smile, lips funnel, lip pucker, brow up, brow down, eye closed. These keyposes are useful for quickly training a landmark model. As of ver 0.3 this tool is stil very much built for mostly stationary faces so if possible a head mounted camera is strongly recommended, but footage with a mostly stationary subject will still work, as shown in the example footage provided.
+
+Upon opening this video with StrongTrack you'll be presented with the video alongside a generic unmatched set of facial landmarks. Scrolling the video and entering landmarks is only possible when the video is paused. Pause the video with the SPACE KEY at the neutral pose and place the landmarks at the corresponding place upon the face. 
+
+Once you're happy with the placement add this to the training set with the F KEY. For this initial entry the model will then train the predictor automatically.
+
+Head to the jaw open frame and repeat. Carry on in this manner, hitting the T KEY whenever you want to train the model. As the model becomes more accurate, less and less manual placement should be necessary. 
+
+# Exporting coefficients, training sets and models.
+
 
