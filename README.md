@@ -7,17 +7,20 @@ This a python based tool for finding coefficients for facial animation from RGB 
 This solution is made up of two core components; Facial landmark tracking and a decomposition to produce coefficients. For landmark tracking this respository includes a method to train and refine a model based on your own footage. Once you are satisfied with the landmark tracking you have each subject pull a number of distinct poses (neutral, smile, jaw open etc) and store these as key poses that are then used as the basis for the decomposition into coefficients. Landmarks from someone half smiling with their mouth open would be decomposited into a result with a 0.5 smile, 0.5 jaw open for example. These coefficients are what is then exported out to a save file or streamed (or both).
 
 # Requirements
-* Python
+* Python3
 * Unreal Engine 4.25 or above (if using UE4)
 
 As well as these python libraries
-* OpenCV
-* Dlib
-* Sklearn
+* OpenCV (for media and GUI)
+* Dlib (facial landmark tracking and training)
+* Sklearn (linear regression/decomposition for coefficients)
 * Numpy
-* PythonOSC
+* PythonOSC 
+* XML elementree 
 
 # Installation
-Assuming you have python and the libraries listed above installed correctly run python strongtrack.py and you should 
+Assuming you have python and the libraries listed above installed correctly run python strongtrack.py and you should be presented with the interface as shown above.
 
+# Example Usage
+Video the subject pulling a series of keyposes. Neutral, jaw fully open, closed smile, lips funnel, lip pucker, brow up, brow down, eye closed. These keyposes are useful for quickly training a landmark model. Upon opening this video with StrongTrack you'll be presented with the video alongside a generic unmatched set of facial landmarks. Pause the video with the SPACE KEY at the neutral pose and place the landmarks at the corresponding place upon the face. Once you're happy with the placement add this to the training set with the F KEY. For this initial entry the model will then train the predictor automatically. Head to the jaw open frame and repeat, hitting the T KEY whenever you want to train 
 
