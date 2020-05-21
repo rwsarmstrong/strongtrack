@@ -1,4 +1,4 @@
-# StrongTracker
+# StrongTrack
 A python tool with facial landmark annotation and coefficient finder.
 
 # Overview
