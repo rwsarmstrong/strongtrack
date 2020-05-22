@@ -167,7 +167,7 @@ lock = (0,0)
 # GET VIDEO
 
 video_path = args.video
-hotkeys = cv2.imread('hotkeys.jpg')
+hotkeys = cv2.imread('projects/images/hotkeys.jpg')
 cap = cv2.VideoCapture(video_path)
 length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
