@@ -1,7 +1,7 @@
 # StrongTrack v0.3
 Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running windows I recommend waiting for an exectuable that I aim to push to this repository soon.
 
-**This tool is still at an early stage of development by a non-professional (look, I can't even get bold text to work on github!). v0.3 represents an early release of just the landmark training component. The resulting training files may continue to be usable in later versions but I cannot guarentee this. Apologies **
+**This tool is still at an early stage of development by a non-professional. v0.3 represents an early release of just the landmark training component. The resulting training files may continue to be usable in later versions but I cannot guarentee this. Apologies **
 
 # Overview
 This a python based tool for finding coefficients for facial animation from RGB video. Coefficients can be exported as a numpy save file (for importing into Blender for example) but can also stream into Unreal Engine (or elsewhere) via OSC.
