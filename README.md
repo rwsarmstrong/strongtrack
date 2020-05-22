@@ -1,5 +1,5 @@
 # StrongTrack v0.3
-Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running windows I recommend waiting for an exectuable that I aim to push to this repository soon.
+Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running windows **I recommend waiting for an exectuable that I aim to push to this repository soon.**
 
 **This tool is still at an early stage of development by a non-professional. v0.3 represents an early release of just the landmark training component. The resulting training files may continue to be usable in later versions but I cannot guarentee this. Apologies **
 
