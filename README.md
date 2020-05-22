@@ -19,7 +19,7 @@ As well as these python libraries
 * XML elementree 
 
 # Installation
-Assuming you have python and the libraries listed above installed correctly run python strongtrack.py and you should be presented with the interface as shown above.
+Assuming you have python and the libraries listed above installed correctly run python strongtrack.py --video PATHTOYOURVIDEO.MP4 --project_name PROJECTNAME  and you should be presented with the interface as shown above.
 
 # Example Usage
 Video the subject pulling a series of keyposes. Neutral, jaw fully open, closed smile, lips funnel, lip pucker, brow up, brow down, eye closed. These keyposes are useful for quickly training a landmark model. As of ver 0.3 this tool is stil very much built for mostly stationary faces so if possible a head mounted camera is strongly recommended, but footage with a mostly stationary subject will still work, as shown in the example footage provided.
@@ -31,5 +31,6 @@ Once you're happy with the placement add this to the training set with the F KEY
 Head to the jaw open frame and repeat. Carry on in this manner, hitting the T KEY whenever you want to train the model. As the model becomes more accurate, less and less manual placement should be necessary. 
 
 # Exporting coefficients, training sets and models.
+
 
 
