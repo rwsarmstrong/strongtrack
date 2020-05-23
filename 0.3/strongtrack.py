@@ -53,7 +53,7 @@ def on_trackbar(val):
             if model == True:
 
                 points = findLandmarks(frame)
-                updateFramePoints(points)
+            updateFramePoints(points)
 
     pass
 
