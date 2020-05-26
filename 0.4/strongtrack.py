@@ -73,11 +73,14 @@ def findLandmarksEyes(frame):
         points.append(coords)
 
     if frame_num == 1:
-        lpupilthreshold = findThreshold(frame, points, 'left', 'pupil')
-        rpupilthreshold = findThreshold(frame, points, 'right', 'pupil')
-        liristhreshold = findThreshold(frame, points, 'left', 'iris')
-        riristhreshold = findThreshold(frame, points, 'right', 'iris')
-        
+        try:
+            lpupilthreshold = findThreshold(frame, points, 'left', 'pupil')
+            rpupilthreshold = findThreshold(frame, points, 'right', 'pupil')
+            liristhreshold = findThreshold(frame, points, 'left', 'iris')
+            riristhreshold = findThreshold(frame, points, 'right', 'iris')
+        except:
+            print('Auto threshold detection failed. As of 0.4 try to ensure first frame of current footage has good eye placement')
+    
     framel, pupil_l, amountl, foundl = eb.getPupil(frame, points, 'left', lpupilthreshold)
     framer, pupil_r, amountr, foundr = eb.getPupil(frame, points, 'right', rpupilthreshold)
 
