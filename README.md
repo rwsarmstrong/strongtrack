@@ -1,4 +1,4 @@
-# StrongTrack v0.3
+# StrongTrack v0.4
 Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running windows **I recommend waiting for an exectuable that I aim to push to this repository soon.** 
 
 **This tool is still at an early stage of development by a non-professional. v0.3 represents an early release of just the landmark training component. The resulting training files may continue to be usable in later versions but I cannot guarentee this. Apologies**
@@ -41,11 +41,7 @@ Head to the next frame (jaw open preferably because it is the most differnet) an
 Hitting ESC will quit.
 
 # Eye tracking
-Still in development. Am trying to decide between blob detection in OpenCV or extending dlib's traing set.
+As of 0.4 we have eye tracking. The eye tracking is early/experimental and heavily dependent upon accurate placement of entire set of eye keypoints.
 
-# Exporting coefficients (not fully functional/documented)
-Once you are happy with landmark tracking, return to the footage of the key poses (neutral, jaw open, smile etc) pause and hit E to add that to the set of keyposes for coefficient extraction. This is a potentially confusingly similar process to providing the landmark training with data but the difference here is that this is the data that will be used in the second step of the process; finding coefficients. However, I'm still working on the full functionality of the documentation for this, so this step is not recommended.
-
-# Live webcam footage
-This is something that I'm able to produce myself - once you have a model trained it's basically the exact same thing - but I'm struggling to incorporate it in a way that will be usable for general use.
-
+# Exporting coefficients (limited to 5 mouth shapes for as of 0.4)
+In 0.4 - once the model has been trained - return to the key poses pulled by the subject and assign up to 5 keyposes with the 1,2,3,4,5 keys. It's suggested that you have these keyposes be the neutral, jaw open, closed smile, lip funnel and lip pucker shapes. Once these 5 have been entered you'll be able to hit the R key to export the coefficients for these shapes. Coefficients are exported as a txt file that is placed in the 'projects' folder. Upon quiting the keyposes you have entered are likewise stored in the projects folder allowing you to open up other footage and produce the coefficients for that footage in the same manner.
