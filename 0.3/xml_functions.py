@@ -15,6 +15,7 @@ def setNeutral(xml_path, points):
         
     return points
 
+# USE CAREFULLY, FILE PATHS BEING FED IN WILL BE OVERWRITTEN!
 def makeXML(xml_path):
 
     dataset = ET.Element("dataset")
