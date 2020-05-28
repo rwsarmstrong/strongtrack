@@ -340,8 +340,8 @@ while(1):
         #Stream the video via OSC
         if model== True:
             if stream == True:
-                mouth_coeffs, browcoeff, blinkcoeff, squintcoeff = decomp.findCoeffsAll(points, streamPoses)
-                print(mouth_coeffs)
+                mouth, browcoeff, blinkcoeff, squintcoeff = decomp.findCoeffsAll(points, streamPoses)
+                #print(mouth)
                 client.send_message("/filter", (mouth[0][0],mouth[0][1],mouth[0][2],mouth[0][3],mouth[0][4]))
                                                 
     #### HANDLES INPUTS - NEEDS TO BE CLEANED UP ####
@@ -401,7 +401,7 @@ while(1):
             if stream == False:
                 check = decomp.checkKeyPoses(streamPoses)
                 if check == True:
-                    stream == True
+                    stream = True
         
     if k==102: # F KEY - ADD TO XML
         if play ==False:
