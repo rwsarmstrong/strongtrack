@@ -3,6 +3,10 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 
 **This tool is still at an early stage of development by a non-professional. v0.4 represents an early release of just the landmark training component although limited export of coefficients is possible with the instructions below. The resulting training files may continue to be usable in later versions but I cannot guarentee this. Apologies**
 
+# 0.5 Release Notes
+* Added GUI for opening video files and creating/loading training models.
+* Added ability to stream coefficients via the 'E' key (once training and keyposes set, see below)
+
 # Overview
 This a python based tool for finding coefficients for facial animation from RGB video. Coefficients can be exported as a numpy save file (for importing into Blender for example) but can also stream into Unreal Engine (or elsewhere) via OSC.
 
@@ -24,12 +28,14 @@ As well as these python libraries
 * PyQT5
 
 # Installation and running
-Assuming you have python and the libraries listed above installed correctly run python strongtrack.py --video PATHTOYOURVIDEO.MP4 --project_name PROJECTNAME  and you should be presented with the interface as shown above.
+Assuming you have python and the libraries listed above installed correctly run python strongtrack.py
 
-The project name you enter is used to set aside different training data and keyposes for multiple faces. XML files, model files and keyposes are created in the base directory alongside strongtrack.py
+Now in 0.5 you'll be presented with a GUI interface where you can pick a video to analyse as well as the option to create a new model or load up a previously created model.
+
+The project name you enter/use is used to set aside different training data and keyposes for multiple faces. XML files, model files and keyposes are created in the 'projects' directory.
 
 # Example Usage
-Video the subject pulling a series of keyposes. Neutral, jaw fully open, closed smile, lips funnel, lip pucker, brow up, brow down, eye closed. These keyposes are useful for quickly training a landmark model. As of ver 0.3 this tool is stil very much built for mostly stationary faces so if possible a head mounted camera is strongly recommended, but footage with a mostly stationary subject will still work.
+Video the subject pulling a series of keyposes. Neutral, jaw fully open, closed smile, lips funnel, lip pucker, brow up, brow down, eye closed. These keyposes are useful for quickly training a landmark model. As of ver 0.5 this tool is stil very much built for mostly stationary faces so if possible a head mounted camera is strongly recommended, but footage with a mostly stationary subject will still work.
 
 Upon opening this video with StrongTrack you'll be presented with the video alongside a generic unmatched set of facial landmarks. Scrolling the video and entering landmarks is only possible when the video is paused. Pause the video with the SPACE KEY at the neutral pose and place the landmarks at the corresponding place upon the face. It's important you start with a neutral frame because this will enable you to later use the N key whenever you want to return the lips to a neutral pose, which is a great time saver.
 
