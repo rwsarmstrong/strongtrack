@@ -25,7 +25,8 @@ def makeXML(xml_path):
 
     tree = ET.ElementTree(dataset)
     tree.write(xml_path)
-
+    
+# USE CAREFULLY, FILE PATHS BEING FED IN WILL BE OVERWRITTEN!
 def appendXML(points, box, file_path, xml_path):
 
     try:
@@ -48,7 +49,7 @@ def appendXML(points, box, file_path, xml_path):
     
     box_frame = ET.SubElement(image, "box", top="%d" % top, left="%d" % left, width="%d" % width, height="%d" % height)
 
-    for element in range(68):
+    for element in range(len(points)):
             x=points[element][0]
             y=points[element][1]
             ET.SubElement(box_frame, "part", name="%02d" % element,x = "%d" % x, y="%d" % y)
