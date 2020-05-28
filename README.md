@@ -44,5 +44,8 @@ Hitting ESC will quit.
 # Eye tracking
 As of 0.4 we have eye tracking. The eye tracking is early/experimental and heavily dependent upon accurate placement of entire set of eye keypoints.
 
-# Exporting coefficients (limited to 5 mouth shapes for as of 0.4)
+# Exporting coefficients and streaming via OSC (limited to 5 mouth shapes for as of 0.5)
 In 0.4 - once the model has been trained - return to the key poses pulled by the subject and assign up to 5 keyposes with the 1,2,3,4,5 keys. It's suggested that you have these keyposes be the neutral, jaw open, closed smile, lip funnel and lip pucker shapes. Once these 5 have been entered you'll be able to hit the R key to export the coefficients for these shapes. Coefficients are exported as a txt file that is placed in the 'projects' folder. Upon quiting the keyposes you have entered are likewise stored in the projects folder allowing you to open up other footage and produce the coefficients for that footage in the same manner.
+
+Alternatively you can hit the 'E' key and stream the coefficients over OSC (currently set to 127.0.0.1).
+
