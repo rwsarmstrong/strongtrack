@@ -32,7 +32,7 @@ class MyWindow(QMainWindow):
         global xml_path
         global project_name
         
-        text, okPressed = QInputDialog.getText(self, "Get text","Enter a project name:", QLineEdit.Normal, "")
+        text, okPressed = QInputDialog.getText(self, "Get text","Enter a project name (no space):", QLineEdit.Normal, "")
         if okPressed and text != '':            
             xml_path_check = 'projects/' + text + '_source.xml'
             
