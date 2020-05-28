@@ -25,7 +25,8 @@ def makeXML(xml_path):
 
     tree = ET.ElementTree(dataset)
     tree.write(xml_path)
-
+    
+# USE CAREFULLY, FILE PATHS BEING FED IN WILL BE OVERWRITTEN!
 def appendXML(points, box, file_path, xml_path):
 
     try:
