@@ -31,7 +31,7 @@ As well as these python libraries
 Assuming you have python and the libraries listed above installed correctly run python strongtrack.py
 If you have using the executable nagivate to the 'executable' and run 'strongtrack.exe'.
 
-Now in 0.5 you'll be presented with a GUI interface where you can pick a video to analyse as well as the option to create a new model or load up a previously created model.
+Now in 0.5 you'll be presented with a GUI interface where you can pick a video to analyse as well as the option to create a new model or load up a previously created model. Only once a model has been created or loaded will the video and annotation tool appear.
 
 The project name you enter/use is used to set aside different training data and keyposes for multiple faces. XML files, model files and keyposes are created in the 'projects' directory.
 
