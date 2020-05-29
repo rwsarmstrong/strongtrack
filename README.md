@@ -25,7 +25,7 @@ As well as these python libraries
 * Numpy
 * PythonOSC 
 * XML elementree 
-* PyQT5
+* PyQT5 (for additional GUI)
 
 # Installation and running
 Assuming you have python and the libraries listed above installed correctly run python strongtrack.py
