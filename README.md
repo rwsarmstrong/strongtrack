@@ -29,6 +29,7 @@ As well as these python libraries
 
 # Installation and running
 Assuming you have python and the libraries listed above installed correctly run python strongtrack.py
+If you have using the executable nagivate to the 'executable' and run 'strongtrack.exe'.
 
 Now in 0.5 you'll be presented with a GUI interface where you can pick a video to analyse as well as the option to create a new model or load up a previously created model.
 
