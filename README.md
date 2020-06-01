@@ -5,7 +5,8 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 
 # 0.5 Release Notes
 * Added GUI for opening video files and creating/loading training models.
-* Added ability to stream coefficients via the 'E' key (once training and keyposes set, see below)
+* Added ability to stream coefficients via the 'E' key (once training and keyposes have been set, see below)
+* Keyposes limited to five for now to keep things simple, but more to follow. 
 
 # Overview
 This a python based tool for finding coefficients for facial animation from RGB video. Coefficients can be exported as a numpy save file (for importing into Blender for example) but can also stream into Unreal Engine (or elsewhere) via OSC.
