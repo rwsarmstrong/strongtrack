@@ -492,7 +492,7 @@ class MyWindow2(QMainWindow):
             #Get width for generic face
             self.cap = cv2.VideoCapture(self.video_path)
             ret, frame = self.cap.read()
-            width = (frame.shape[1])
+            width = (frame.shape[1]*self.resizeFac)
             
             #Comparing against original dimensions of 'generic face' footage
             widthfactor = (1080/width)           
