@@ -220,7 +220,7 @@ port = 5005
 client = udp_client.SimpleUDPClient(ip, port)
 morphs = np.zeros((50))
 base = np.load('data/base.npy')
-cindices = np.array([np.zeros((50)),base[19],base[30]+base[31],base[30],base[31],base[36]+base[37],base[41],base[40],base[16]+base[17]+base[18],base[15]+base[14],base[0]+base[1]])
+cindices = np.array([np.zeros((50)),base[19],base[30]+base[31],base[30],base[31],base[36]+base[37],base[41],base[40]])
 
 #Eye blob thresholds (need to tidy)
 lpupilthreshold = 30
@@ -462,8 +462,8 @@ class MyWindow2(QMainWindow):
         super(MyWindow2,self).__init__()
         self.stream = False
         self.record = False
-        self.dropOptions = ["Neutral","JawOpen","Closed Smile","Smile L","Smile R","Frown", "Funnel", "Pucker", "Brows Up", "Brows Down", "Eyes Closed"]
-        self.keydrops = np.zeros((11,70,2))
+        self.dropOptions = ["Neutral","JawOpen","Closed Smile","Smile L","Smile R","Mouth Frown", "Funnel", "Pucker"]
+        self.keydrops = np.zeros((8,70,2))
         self.initUI()
 
     def checkPredictor(self):
@@ -522,8 +522,9 @@ class MyWindow2(QMainWindow):
         name = self.comboBox.currentText()
         
         index = self.dropOptions.index(name)
-        
         self.keydrops[index] = points
+        print('Added keypose: ' + name) 
+        
         export_filename = 'projects/'+ self.project_name + '_keyposes.npy'
         np.save(export_filename, self.keydrops)
 
