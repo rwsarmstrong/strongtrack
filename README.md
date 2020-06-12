@@ -57,4 +57,9 @@ Using the dropdown list in the control panel, assign different frames as represe
 
 Once this file has been created you can proceed with the remaining two buttons on the control panel; Export to Txt and Stream OSC. It's best to commit as many different poses to the file as possible, though not all are necessary (as of 0.6 the only keyposes provided are mouth shapes). The more provided the more accurate animation can be generated.
 
-When exporting animation, either to file or OSC, it will take the form of 51 different values that combine to describe many different possible facial expressions.
+# Usage
+When exporting animation, either to file or OSC, it will take the form of 51 different values that combine to describe many different possible facial expressions. These values are written to the text file as plain text as an array in the shape of (number of frames, 51).
+With OSC the values are streamed one a frame to 127.0.0.1 as a float array of length 51.
+
+# Example project files
+TODO
