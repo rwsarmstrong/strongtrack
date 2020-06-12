@@ -48,7 +48,13 @@ Head to the next frame (jaw open preferably because it is the most different) an
 
 Use the W key to weld lip centre together or N key to return mouth points to neutral. These are useful timesavers.
 
-Hitting ESC will quit the viewer though as of 0.6 you'll have to also close the GUI to fully quit.
+Hitting ESC will quit the viewer.
 
 # Example - Morph targets/shapekey export.
-TO DO
+Once you are happy with the accuracy of landmark placement you can assign keyposes for the decomposition algorithm to use to produce animation data. You should use the same footage of 'extreme' poses (neutral, jaw open, smile, funnel etc) as used in the landmark training for similar reasoning; the more different poses are, the easier it is to produce data from them. 
+
+Using the dropdown list in the control panel, assign different frames as representing different key poses, making sure to hit 'set keypose' each time. Whenever you hit 'set keypose' a datafile called 'PROJECTNAME_keyposes.npy' will be created/modified.
+
+Once this file has been created you can proceed with the remaining two buttons on the control panel; Export to Txt and Stream OSC. It's best to commit as many different poses to the file as possible, though not all are necessary (as of 0.6 the only keyposes provided are mouth shapes). The more provided the more accurate animation can be generated.
+
+When exporting animation, either to file or OSC, it will take the form of 51 different values that combine to describe many different possible facial expressions.
