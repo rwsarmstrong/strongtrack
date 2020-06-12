@@ -7,6 +7,9 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 * Added additional GUI for assigning keyposes and for streaming/recording morphs (limited to mouth shapes only still).
 * Removed initial gesture at eye/eyebrow tracking due to quality being too low for public use.
 
+# Looking beyond 0.6
+A big push for 0.6 was continung to flesh out the program with a UI based on PyQt 5 to allow for easier access to tools by the user. With a lot of that work now happily underway, I hope to return my focus to improving and including eyebrow/eye tracking in the (hopefully) near future.
+
 # Overview
 This a python based tool for finding coefficients for facial animation from RGB video. Coefficients can be exported as a numpy save file (for importing into Blender for example) but can also stream into Unreal Engine (or elsewhere) via OSC.
 
@@ -57,7 +60,7 @@ Using the dropdown list in the control panel, assign different frames as represe
 
 Once this file has been created you can proceed with the remaining two buttons on the control panel; Export to Txt and Stream OSC. It's best to commit as many different poses to the file as possible, though not all are necessary (as of 0.6 the only keyposes provided are mouth shapes). The more provided the more accurate animation can be generated.
 
-# Usage
+# Workflow pt3 - Usage
 To export animation ensure you're happy with the landmark tracking model and the keypose set. Open the video file you want to animate with and select the landmark model. The corresponding keypose set with be selected automatically based off the filenames. As part of this session you can continue to update and trainthe landmark training with the source footage to account for particular face shapes. Indeed, this will almost certainly be required if not using headmounted cameras.
 
 When ready to export animation, either to file or OSC, it will take the form of 51 different values that combine to describe many different possible facial expressions. These values are written to the text file as plain text as an array in the shape of (number of frames, 51). With OSC the values are streamed one a frame to 127.0.0.1 as a float array of length 51.
