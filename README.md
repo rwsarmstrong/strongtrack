@@ -35,7 +35,7 @@ Now in 0.6 you'll be presented with a GUI interface where you can pick a video t
 
 The project name you enter/use is used to set aside different training data and keyposes for multiple faces. XML files, model files and keyposes are created in the 'projects' directory.
 
-# Example - Landmark placement.
+# Workflow pt 1 - Landmark placement.
 Video the subject pulling a series of keyposes. Neutral, jaw fully open, closed smile, lips funnel, lip pucker, brow up, brow down, eye closed. These keyposes are useful for quickly training a landmark model. As of ver 0.5 this tool is stil very much built for mostly stationary faces so if possible a head mounted camera is strongly recommended, but footage with a mostly stationary subject will still work.
 
 Upon opening this video with StrongTrack you'll be presented with the video alongside a generic unmatched set of facial landmarks. Scrolling the video and entering landmarks is only possible when the video is paused. Pause the video with the SPACE KEY at the neutral pose and place the landmarks at the corresponding place upon the face. It's important you start with a neutral frame because this will enable you to later use the N key whenever you want to return the lips to a neutral pose, which is a great time saver.
@@ -50,7 +50,7 @@ Use the W key to weld lip centre together or N key to return mouth points to neu
 
 Hitting ESC will quit the viewer.
 
-# Example - Morph targets/shapekey export.
+# Workflow pt 2 - Morph targets/shapekey export.
 Once you are happy with the accuracy of landmark placement you can assign keyposes for the decomposition algorithm to use to produce animation data. You should use the same footage of 'extreme' poses (neutral, jaw open, smile, funnel etc) as used in the landmark training for similar reasoning; the more different poses are, the easier it is to produce data from them. 
 
 Using the dropdown list in the control panel, assign different frames as representing different key poses, making sure to hit 'set keypose' each time. Whenever you hit 'set keypose' a datafile called 'PROJECTNAME_keyposes.npy' will be created/modified.
