@@ -61,9 +61,11 @@ Using the dropdown list in the control panel, assign different frames as represe
 Once this file has been created you can proceed with the remaining two buttons on the control panel; Export to Txt and Stream OSC. It's best to commit as many different poses to the file as possible, though not all are necessary (as of 0.6 the only keyposes provided are mouth shapes). The more provided the more accurate animation can be generated.
 
 # Workflow pt3 - Usage
-To export animation ensure you're happy with the landmark tracking model and the keypose set. Open the video file you want to animate with and select the landmark model. The corresponding keypose set with be selected automatically based off the filenames. As part of this session you can continue to update and trainthe landmark training with the source footage to account for particular face shapes. Indeed, this will almost certainly be required if not using headmounted cameras.
+To export animation ensure you're happy with the landmark tracking model and the keypose set. Open the video file you want to animate with and select the landmark model. The corresponding keypose set with be selected automatically based off the filenames. As part of this session you can continue to update and train the landmark training with the source footage to account for particular face shapes. Indeed, this will almost certainly be required if not using headmounted cameras.
 
-When ready to export animation, either to file or OSC, it will take the form of 51 different values that combine to describe many different possible facial expressions. These values are written to the text file as plain text as an array in the shape of (number of frames, 51). With OSC the values are streamed one a frame to 127.0.0.1 as a float array of length 51.
+When ready to export animation, either to file or OSC, it will take the form of 51 different values that combine to describe many different possible facial expressions. The names of the values can be found listed in the 'blenderimport' python script. Your model does not need to have all 51 shapes (all footage I've currently shared uses about 5-6), but the names do need to match.
+
+These values are written to the text file as plain text as an array in the shape of (number of frames, 51). With OSC the values are streamed one a frame to 127.0.0.1 as a float array of length 51.
 
 # Workflow pt 4 - Refinement
 Coming hopefully in 0.8.
