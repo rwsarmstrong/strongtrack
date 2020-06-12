@@ -8,7 +8,7 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 * Removed initial gesture at eye/eyebrow tracking due to quality being too low for public use.
 
 # Looking beyond 0.6
-A big push for 0.6 was continung to flesh out the program with a UI based on PyQt 5 to allow for easier access to tools by the user. With a lot of that work now happily underway, I hope to return my focus to improving and including eyebrow/eye tracking in the (hopefully) near future.
+A big push for 0.6 was continuing to flesh out the program with a UI based on PyQt 5 to allow for easier access to tools by the user. With a lot of that work now happily underway, I hope to return my focus to improving the mouth tracking and reintroducing eyebrow/eye tracking in the (hopefully) near future.
 
 # Overview
 This a python based tool for finding coefficients for facial animation from RGB video. Coefficients can be exported as a numpy save file (for importing into Blender for example) but can also stream into Unreal Engine (or elsewhere) via OSC.
@@ -64,6 +64,9 @@ Once this file has been created you can proceed with the remaining two buttons o
 To export animation ensure you're happy with the landmark tracking model and the keypose set. Open the video file you want to animate with and select the landmark model. The corresponding keypose set with be selected automatically based off the filenames. As part of this session you can continue to update and trainthe landmark training with the source footage to account for particular face shapes. Indeed, this will almost certainly be required if not using headmounted cameras.
 
 When ready to export animation, either to file or OSC, it will take the form of 51 different values that combine to describe many different possible facial expressions. These values are written to the text file as plain text as an array in the shape of (number of frames, 51). With OSC the values are streamed one a frame to 127.0.0.1 as a float array of length 51.
+
+# Workflow pt 4 - Refinement
+Coming hopefully in 0.8.
 
 # Example project files
 TODO
