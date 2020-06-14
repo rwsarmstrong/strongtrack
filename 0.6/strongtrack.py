@@ -219,8 +219,13 @@ ip = "127.0.0.1"
 port = 5005
 client = udp_client.SimpleUDPClient(ip, port)
 morphs = np.zeros((50))
-base = np.load('data/base.npy')
-cindices = np.array([np.zeros((50)),base[19],base[30]+base[31],base[30],base[31],base[36]+base[37],base[41],base[40]])
+
+try:
+    base = np.load('data/base.npy')
+    cindices = np.array([np.zeros((50)),base[19],base[30]+base[31],base[30],base[31],base[36]+base[37],base[41],base[40]])
+except:
+    cindices = np.array([np.zeros((8,50))])
+    print('CAUTION: Morph target data failed to load. Strong track will still function but morph targets will not be exported correctly. Ensure directory structure')
 
 #Eye blob thresholds (need to tidy)
 lpupilthreshold = 30
@@ -460,11 +465,17 @@ class MyWindow2(QMainWindow):
     
     def __init__(self):
         super(MyWindow2,self).__init__()
-        self.stream = False
-        self.record = False
-        self.dropOptions = ["Neutral","JawOpen","Closed Smile","Smile L","Smile R","Mouth Frown", "Funnel", "Pucker"]
-        self.keydrops = np.zeros((8,70,2))
-        self.initUI()
+
+        checkbase = os.path.exists('data/baseface.npy')
+        
+        if checkbase == True:
+            self.stream = False
+            self.record = False
+            self.dropOptions = ["Neutral","JawOpen","Closed Smile","Smile L","Smile R","Mouth Frown", "Funnel", "Pucker"]
+            self.keydrops = np.zeros((8,70,2))
+            self.initUI()
+        else:
+            print('Support data files not found. Strong Track cannot start. Check directory structure is same as when downloaded')
 
     def checkPredictor(self):
         global model
@@ -505,11 +516,17 @@ class MyWindow2(QMainWindow):
             self.predictor = dlib.shape_predictor(self.predictor_name)
             
     def setUpVideo(self):
-        width, height = screen_resolution.width(), screen_resolution.height()
-        self.cap = cv2.VideoCapture(self.video_path)
-        self.length = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        ret, frame = self.cap.read()
-        self.resizeFac = height/frame.shape[0]*0.8
+        try:
+            width, height = screen_resolution.width(), screen_resolution.height()
+            self.cap = cv2.VideoCapture(self.video_path)
+            self.length = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            ret, frame = self.cap.read()
+            self.resizeFac = height/frame.shape[0]*0.8
+        except:
+            self.resizeFac = 1.0
+            self.cap = cv2.VideoCapture(self.video_path)
+            self.length = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            print('Was unable to get screen resolution. Video being display at native resolution')
     
     def beginSession(self):
         self.setUpVideo()
@@ -559,7 +576,6 @@ class MyWindow2(QMainWindow):
 
         if okPressed and text != '':            
             xml_path_check = 'projects/' + text + '_source.xml'
-            
             #Check if file already exists
             check = os.path.exists(xml_path_check)
             
@@ -604,14 +620,21 @@ class MyWindow2(QMainWindow):
                 
         fileName, _ = QFileDialog.getOpenFileName(self,"Open Video", "","All Files (*);")
         if fileName:
-            check = rx.verifyVideo(fileName)
-            if check == True:                
-                self.video_path = fileName
-                self.b1.setEnabled(False)
-                self.b3.setEnabled(True)
-                self.b2.setEnabled(True)
+            checkext = rx.verifyVideo(fileName)
+            if checkext == True:
+                video_path = fileName
+                cap = cv2.VideoCapture(video_path)
+                ret, frame = cap.read()
+                if ret == True:
+                    self.video_path = fileName
+                    self.b1.setEnabled(False)
+                    self.b3.setEnabled(True)
+                    self.b2.setEnabled(True)
+                if ret == False:
+                    print('StrongTrack was unable to open this video file. Extension was correct but codec may be incompatible as of this version')
             else:
-                print('file extension not valid')
+                print('File extension not valid. StrongTrack currently supports files with mp4, avi and mov extensions')
+        
 
     def printVal(self, value):
         print(value)
@@ -659,13 +682,6 @@ class MyWindow2(QMainWindow):
         self.b3.move(50,130)
         self.b3.clicked.connect(self.loadModel)
         self.b3.setEnabled(False)
-        '''
-        self.sl = QSlider(Qt.Horizontal, self)
-        self.sl.setGeometry(50, 380, 100, 30)
-        self.sl.setMinimum(0)
-        self.sl.setMaximum(100)
-        self.sl.setValue(0)
-        self.sl.valueChanged[int].connect(self.printVal)'''
         
         self.comboBox = QComboBox(self)
         self.comboBox.setGeometry(QRect(40, 280, 120, 31))
@@ -693,7 +709,11 @@ class MyWindow2(QMainWindow):
         self.b7.setEnabled(False)
 
 app = QApplication(sys.argv)
-screen_resolution = app.desktop().screenGeometry()
+
+try:
+    screen_resolution = app.desktop().screenGeometry()
+except:
+    print('Unable to get screen resolution')
 win2= MyWindow2()
 win2.show()
 app.exec_()
