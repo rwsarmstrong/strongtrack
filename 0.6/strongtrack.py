@@ -504,10 +504,19 @@ class MyWindow2(QMainWindow):
             self.cap = cv2.VideoCapture(self.video_path)
             ret, frame = self.cap.read()
             width = (frame.shape[1]*self.resizeFac)
-            
+            height = (frame.shape[0]*self.resizeFac)
+            vidrat = frame.shape[0]/frame.shape[1]
+                    
             #Comparing against original dimensions of 'generic face' footage
-            widthfactor = (1080/width)           
-            self.genericFace = np.divide(self.genericFace, [widthfactor,widthfactor]).astype(int)
+            widthfactor = (1080/width)
+            heightfactor = (1200/height)
+
+            if vidrat >= 1.0:
+                print('portrait')
+                self.genericFace = np.divide(self.genericFace, [widthfactor,widthfactor]).astype(int)
+            else:
+                print('landscape')
+                self.genericFace = np.divide(self.genericFace, [heightfactor,heightfactor]).astype(int)
             print('done')
             
         else:
@@ -521,6 +530,7 @@ class MyWindow2(QMainWindow):
             self.cap = cv2.VideoCapture(self.video_path)
             self.length = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
             ret, frame = self.cap.read()
+            
             self.resizeFac = height/frame.shape[0]*0.8
         except:
             self.resizeFac = 1.0
