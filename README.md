@@ -3,7 +3,7 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 
 **This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). v0.6 represents an early release of just the landmark training component although limited export of coefficients is possible with the instructions below. The resulting training files may continue to be usable in later versions but I cannot guarantee this. Apologies**
 
-[![Link to StrongTrack Tutorial on YouTube](/0.6/projects/images/YouTubeLink.jpg)](https://youtu.be/5ZGeJN3wDi8 "Link to StrongTrack Tutorial on YouTube")
+[![Link to StrongTrack Tutorial on YouTube](/0.6/projects/images/YouTubeLink.jpg)](https://youtu.be/L403lqCmMTk "Link to StrongTrack Tutorial on YouTube")
 
 # 0.6 Release Notes
 * Added additional GUI for assigning keyposes and for streaming/recording morphs (limited to mouth shapes only still).
