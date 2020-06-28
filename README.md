@@ -10,6 +10,8 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 * Performance improvement for video scrubbing.
 * Ability to resize window
 
+![Screenshot](/0.61/projects/images/screenshot.jpg)
+
 # Looking beyond 0.6
 A big push for 0.6 was continuing to flesh out the program with a UI based on PyQt 5 to allow for easier access to tools by the user. With a lot of that work now happily underway, I hope to return my focus to improving the mouth tracking and reintroducing eyebrow/eye tracking in the (hopefully) near future.
 
