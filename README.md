@@ -1,13 +1,16 @@
-# StrongTrack v0.6
-Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running windows 10 I recommend trying the exectuable  which can be found [here](https://drive.google.com/file/d/1q-SJoISpylqYbaZILuCMIJWKkvI9_S6z/view?usp=sharing) (google drive. 90.6 MB zip). This executable consists of the code contained within this reposititory passed through pyinstaller for packaging. I'm now working on a full install process for windows/mac/linux to further lower the barrier to entry.
+# StrongTrack v0.6.1
+Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation.. This executable consists of the code contained within this reposititory passed through pyinstaller for packaging. I'm now working on a full install process for windows/mac/linux to further lower the barrier to entry.
 
-**This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). v0.6 represents an early release of just the landmark training component although limited export of coefficients is possible with the instructions below. The resulting training files may continue to be usable in later versions but I cannot guarantee this. Apologies**
+**This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). v0.6.1 represents an early release of just the landmark training component although limited export of coefficients is possible with the instructions below. The resulting training files may continue to be usable in later versions but I cannot guarantee this. Apologies**
 
 [![Link to StrongTrack Tutorial on YouTube](/0.6/projects/images/YouTubeLink.jpg)](https://youtu.be/L403lqCmMTk "Link to StrongTrack Tutorial on YouTube")
 
-# 0.6 Release Notes
-* Added additional GUI for assigning keyposes and for streaming/recording morphs (limited to mouth shapes only still).
-* Removed initial gesture at eye/eyebrow tracking due to quality being too low for public use.
+# 0.6.1 Release Notes
+* New UI following complete overhaul in preperation for 0.7. 
+* Ability to open new videos and models without closing strong track
+* Previous/next frame advancement
+* Performance improvement for video scrubbing.
+* Ability to resize window
 
 # Looking beyond 0.6
 A big push for 0.6 was continuing to flesh out the program with a UI based on PyQt 5 to allow for easier access to tools by the user. With a lot of that work now happily underway, I hope to return my focus to improving the mouth tracking and reintroducing eyebrow/eye tracking in the (hopefully) near future.
