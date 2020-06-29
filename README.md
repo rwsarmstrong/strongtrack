@@ -25,13 +25,13 @@ This solution is made up of two core components; Facial landmark tracking and a 
 * Unreal Engine 4.25 or above (if using UE4)
 
 As well as these python libraries
-* OpenCV (for media and GUI)
+* OpenCV (for media and rendering)
 * Dlib (facial landmark tracking and training)
 * Sklearn (linear regression/decomposition for coefficients)
 * Numpy
 * PythonOSC 
 * XML elementree 
-* PyQT5 (for additional GUI)
+* PyQT5 (for GUI)
 
 # Installation and running
 Assuming you have python and the libraries listed above installed correctly run python strongtrack.py
