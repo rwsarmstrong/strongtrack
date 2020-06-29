@@ -1,0 +1,17 @@
+1. Head to python.org, hover over downloads and select windows. Then click the link at the top of the page to the latest version.
+2. Scroll to the bottom of the page and select/download the windows x86-64 exectuable installer. This is the 64 bit version necessary for this install.
+3. Once this is downloaded, run the installer being sure to select 'add python 3.8 to PATH', selecting 'customize installation' and checking pip and IDLE are being installed.
+4. Open the command prompt by opening the start menu and searching for 'cmd' or 'command prompt'. 
+5. In the command prompt first enter 'pip install cmake' and wait for the download and installation to complete. This must be done first.
+6. In the command prompt enter 'pip install dlib' and wait for the download and installation to complete.
+7. In the command prompt enter 'pip install pyqt5' and wait for the download and installation to complete.
+8. In the command prompt enter 'pip install opencv-python' and wait for the download and installation to complete.
+9. In the command prompt enter 'pip install scikit-leran' and wait for the download and installation to complete.
+10. In the command prompt enter 'pip install python-osc' and wait for the download and installation to complete.
+
+Your system should now be able to run the strongtrack.py file in this repository. 
+1. Download the repository in it's entirety by selecting 'clone' and then 'download zip'.
+2. Extract the zip file and maintain the resulting folders structure (don't move the files within around).
+3. Open the program 'IDLE' that came as part of the python installation. Navigate to where you extracted the strongtrack files and open 'strongtrack.py'
+4. Press F5 or select 'run -> run module' to run strongtrack.
+5. You should now be presented with the strong track interface!
