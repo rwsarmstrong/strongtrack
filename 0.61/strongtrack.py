@@ -439,7 +439,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.xml_path = xml_path_check
                 self.checkPredictor()
                 
-                factor = self.label.width()/frame_raw.shape[1]
+                factor = self.getFactor()
                                
             else:
                 print('project file already exists. Pick another name')
@@ -496,7 +496,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.predictor = dlib.shape_predictor(self.predictor_name)
             self.model = True
             showPoints = True
-            factor = self.label.width() / frame_raw.shape[1]
+            #factor = self.label.width() / frame_raw.shape[1]
             try:
                 import_filename = 'projects/' + self.project_name + '_keyposes.npy'
                 self.keydrops = np.load(import_filename)
@@ -529,7 +529,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 points = findLandmarks(frame_scaled, window.predictor)
 
             else:
-                points = window.genericFace * factor
+                #points = window.genericFace * factor
+                genericfactor = self.getGenericFactor()
+                
+                points = window.genericFace *genericfactor
 
             frame_scaled = render.drawFace(frame_scaled, points, 'full')
             frame_scaled = render.drawControlPoints(points, frame_scaled, active)
@@ -713,6 +716,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             frame_scaled = updateFramePoints(pointsmove)
             self.update_image_paused(frame_scaled)
 
+    def getGenericFactor(self):
+        rawwidth = frame_raw.shape[1]
+        rawheight = frame_raw.shape[0]
+
+        scaledwidth = rawwidth  * factor
+        scaledheight = rawheight * factor
+
+        scaledratio = scaledwidth/ scaledheight
+        genericratio = 1080/1200
+
+        if scaledratio >= genericratio:
+            # less portrait
+            genericfactor = scaledheight / 1200
+
+        else:
+            # more landscape
+            genericfactor = scaledwidth / 1080
+
+        return genericfactor
+
     def getFactor(self):
         global frame_raw
 
@@ -730,7 +753,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if rawratio < holderratio:
             factor = holderheight / rawheight
-
         return factor
 
     def resizeEvent(self, event):
