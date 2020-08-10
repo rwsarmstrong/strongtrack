@@ -799,6 +799,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             frame_num = 0
             morphs_store = []
 
+            self.prepKeyposes()
+
             while (1):
                 frame_num = frame_num + 1
                 ret, frame = window.cap.read()
@@ -821,22 +823,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def streamOSC(self):
         
         if self.model == True:
-            self.setposes = []
-    
-            for i in range(self.keydrops.shape[0]):
-                if sum(sum((self.keydrops[i]))) != 0.0:
-                    self.setposes.append(i)
 
-            keyposes = []
-    
-            for entry in self.setposes:
-                keyposes.append(self.keydrops[entry])
-    
-            self.keyposes = np.array(keyposes)
+            self.prepKeyposes()
             
             self.stream = True
 
         print('stream')
+
+    def prepKeyposes(self):
+
+        self.setposes = []
+
+        for i in range(self.keydrops.shape[0]):
+            if sum(sum((self.keydrops[i]))) != 0.0:
+                self.setposes.append(i)
+
+        keyposes = []
+
+        for entry in self.setposes:
+            keyposes.append(self.keydrops[entry])
+
+        self.keyposes = np.array(keyposes)
 
     def pause(self):
         
