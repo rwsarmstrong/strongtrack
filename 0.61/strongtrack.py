@@ -49,7 +49,7 @@ port = 5005
 client = udp_client.SimpleUDPClient(ip, port)
 morphs = np.zeros((50))
 
-def coeffsToMorphs(coeffs):
+def coeffsToMorphs(coeffs,points):
     global window
 
     base = np.load('data/base.npy')
@@ -173,7 +173,7 @@ class VideoThread(QThread):
 
                             coeffs2, _, _, _ = decomp.findCoeffsAll(points, window.keyposes)
                             coeffs = coeffs2[0]
-                            morphs = coeffsToMorphs(coeffs)
+                            morphs = coeffsToMorphs(coeffs, points)
                             client.send_message("/filter", morphs)
 
                         frame_scaled = render.drawFace(frame_scaled, points, 'full')
@@ -810,7 +810,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     points = findLandmarks(frame, self.predictor)
                     coeffs2, _, _, _ = decomp.findCoeffsAll(points,self.keyposes)
                     coeffs = coeffs2[0]
-                    morphs = coeffsToMorphs(coeffs)
+                    morphs = coeffsToMorphs(coeffs, points)
                     morphs_store.append(morphs)
                 else:
                     break
