@@ -1,19 +1,12 @@
-# StrongTrack v0.6.1
+# StrongTrack v0.7
 Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running a windows 10 (with a 64 bit installation...which it probably is) I recommend trying the exectuable  which can be found [here](https://drive.google.com/file/d/1GGCJi7_Ew7-2q43-f8itb1GNePmdW6-m/view?usp=sharing) (google drive. 99.9 MB zip). This executable consists of the code contained within this reposititory passed through pyinstaller for packaging. I'm working on a full install process for windows/mac/linux to further lower the barrier to entry but this may take a while.
 
-**This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). v0.6.1 represents an early release of just the landmark training component although limited export of coefficients is possible with the instructions below. The resulting training files may continue to be usable in later versions but I cannot guarantee this. Apologies**
+**This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). v0.7 represents an early release of just the landmark training component although limited export of coefficients is possible with the instructions below. The resulting training files may continue to be usable in later versions but I cannot guarantee this. Apologies**
 
 ![Screenshot](/0.61/projects/images/screenshot.jpg)
 
-# 0.6.1 Release Notes
-* New UI following complete overhaul in preperation for 0.7. 
-* Ability to open new videos and models without closing strong track
-* Previous/next frame advancement
-* Performance improvement for video scrubbing.
-* Ability to resize window
-
-# Looking beyond 0.6
-A big push for 0.6 was continuing to flesh out the program with a UI based on PyQt 5 to allow for easier access to tools by the user. With a lot of that work now happily underway, I hope to return my focus to improving the mouth tracking and reintroducing eyebrow/eye tracking in the (hopefully) near future.
+# 0.7 Release Notes
+* Eyebrow tracking 
 
 # Overview
 This a python based tool for finding coefficients for facial animation from RGB video. Coefficients can be exported as a numpy save file (for importing into Blender for example) but can also stream into Unreal Engine (or elsewhere) via OSC.
