@@ -1,6 +1,6 @@
 # StrongTrack v0.7
 
- Download the windows 10, (64 bit only) verion [here](https://drive.google.com/file/d/19h9OBaaSLLB9Ld5YYgxasLVn5PtUbEez/view?usp=sharing) (google drive. 99.9 MB zip).
+ Download the windows 10, (64 bit only) version [here](https://drive.google.com/file/d/19h9OBaaSLLB9Ld5YYgxasLVn5PtUbEez/view?usp=sharing) (google drive. 99.9 MB zip).
 
 Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running a windows 10 (with a 64 bit installation...which it probably is) I recommend trying the exectuable linked above. This executable consists of the code contained within this reposititory passed through pyinstaller for packaging. I'm working on a full install process for windows/mac/linux to further lower the barrier to entry but this may take a while.
 
