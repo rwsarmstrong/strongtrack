@@ -3,7 +3,7 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 
 **This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). v0.7 represents an early release of just the landmark training component although limited export of coefficients is possible with the instructions below. The resulting training files may continue to be usable in later versions but I cannot guarantee this. Apologies**
 
-![Screenshot](/0.61/projects/images/screenshot.jpg)
+![Screenshot](/0.7/projects/images/screenshot.jpg)
 
 # 0.7 Release Notes
 * Eyebrow tracking 
