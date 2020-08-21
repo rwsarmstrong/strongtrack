@@ -70,4 +70,4 @@ These values are written to the text file as plain text as an array in the shape
 Coming hopefully in 0.8. A process that draws on the animation analysis to make better targeted and full use of all available blend shapes/morph targets on a model.
 
 # Example project files
-An Unreal Engine project (4.25 and above) can be found [here](https://drive.google.com/file/d/1rztGyj5QCn93YMP6mFNsOeiCBTsx14dH/view?usp=sharing) (google drive. 158.4 MB zip). A Blender example project (created with 2.83) can be found [here](https://drive.google.com/file/d/1Cc5C3XLTZ4ARIfuHRgpdbcasczQbD8-n/view?usp=sharing) (google drive. 26.7 MB zip)
+An Unreal Engine project (4.25 and above) can be found [here](https://drive.google.com/file/d/1rztGyj5QCn93YMP6mFNsOeiCBTsx14dH/view?usp=sharing) (google drive. 158.4 MB zip). A Blender example project (created with 2.83) can be found [here](https://drive.google.com/file/d/1esG5yJNPG0h7Tzv66Qd5h-R35Je0IWnT/view?usp=sharing) (google drive. 5.3 MB zip)
