@@ -343,9 +343,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.update_image_paused(frame_scaled)
 
             if self.stream == True:
-                coeffs2, _, _, _ = decomp.findCoeffsAll(points, window.keyposes)
-                coeffs = coeffs2[0]
-                morphs = coeffsToMorphs(coeffs)
+                coeffs, browcoeffs, _, _ = decomp.findCoeffsAll(points, window.keyposes, self.keydrops)
+
+                morphs = coeffsToMorphs(coeffs, browcoeffs, points)
                 client.send_message("/filter", morphs)
 
     def prevFrame(self):
