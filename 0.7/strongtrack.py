@@ -95,6 +95,10 @@ def coeffsToMorphs(coeffs, browcoeffs, points):
     cindex = cindices[9]*browcoeffs[1][1]
     morphs = morphs + cindex
 
+    browcentre = (browcoeffs[0][0]+browcoeffs[1][0])/2
+    cindex = cindices[10] * browcentre
+    morphs = morphs + cindex
+
     cindex = cindices[11]*browcoeffs[0][0]
     morphs = morphs + cindex
 
