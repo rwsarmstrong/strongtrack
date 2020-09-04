@@ -209,6 +209,23 @@ def findCoeffsBrowsSimple(points, keyposes):
 
     return coeffsleft, coeffsright
 
+def seperateKeyPoses(keydrops):
+
+    keyposes_mouth = []
+
+    for i in range(8):
+        if keydrops[i][0][0] != 0.0:
+            keyposes_mouth.append(keydrops[i])
+
+    keyposes_brows = []
+    keyposes_brows.append(keydrops[0])
+
+    for i in range(8,10):
+        if keydrops[i][0][0] != 0.0:
+            keyposes_brows.append(keydrops[i])
+
+    return keyposes_mouth, keyposes_brows
+
 def findCoeffsAll(points, keyposes, keydrops):
 
     #Find mouth coeffs
@@ -218,8 +235,21 @@ def findCoeffsAll(points, keyposes, keydrops):
     width_points = points[16][0]-points[0][0]
 
     #Temporary means for removing eye keyposes from mouth by removing last two (brows up and down)
-    nobrowsindex = len(keyposes)-1
-    keyposes_mouth = keyposes[0:nobrowsindex]
+    keyposes_mouth = keyposes
+
+    if keydrops[8][0][0] != 0.0:
+        'Brow Up set. Removing from keyposes for mouth'
+        nobrowsindex = len(keyposes_mouth) - 1
+
+        keyposes_mouth= keyposes_mouth[0:nobrowsindex]
+
+    if keydrops[9][0][0] != 0.0:
+        'Brow Down set. Removing from keyposes for mouth'
+        nobrowsindex = len(keyposes_mouth) - 1
+
+        keyposes_mouth= keyposes_mouth[0:nobrowsindex]
+
+    keyposes_mouth, keyposes_brows = seperateKeyPoses(keydrops)
 
     shiftedPosesMouth = shiftKeyPoses(width_points, mouth_centre, keyposes_mouth, 'mouth')
 
@@ -230,7 +260,7 @@ def findCoeffsAll(points, keyposes, keydrops):
     eyes_centre = eyes.mean(0)
 
     # Temporary means for removing mouth keyposes from eyes
-    keyposes_brows = np.array([keydrops[0],keydrops[8],keydrops[9]])
+    #keyposes_brows = np.array([keydrops[0],keydrops[8],keydrops[9]])
 
     shiftedPosesBrows = shiftKeyPoses(width_points, eyes_centre, keyposes_brows, 'brows')
 
