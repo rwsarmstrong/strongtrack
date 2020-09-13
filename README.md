@@ -1,6 +1,6 @@
 # StrongTrack v0.7
 
-Download the windows 10, (64 bit only) version [here](https://drive.google.com/file/d/19h9OBaaSLLB9Ld5YYgxasLVn5PtUbEez/view?usp=sharing) (google drive. 99.9 MB zip). WARNING: DUE TO PROBLEMS WITH THE METHOD I USE TO PACKAGE THE EXECUTABLE I'M CURRENTLY UNABLE TO UPDATE THIS BUILD AND THERE IS A KNOWN BUG THAT RENDERS COEFFICENT EXTRACTION SUB OPTIMAL IN CERTAIN CASES. AT THE TIME OF WRITING - IF ABLE TO - I RECOMMEND USING THE SCRIPTS HELD WITHIN THIS REPOSITORY RATHER THAN THE EXECTUABLE.
+Download the windows 10, (64 bit only) version [here](https://drive.google.com/file/d/19h9OBaaSLLB9Ld5YYgxasLVn5PtUbEez/view?usp=sharing) (google drive. 99.9 MB zip).
 
 Example projects for UE4 and Blender may be found at the bottom of the page.
 
