@@ -1,6 +1,8 @@
 # StrongTrack v0.7
 
- Download the windows 10, (64 bit only) version [here](https://drive.google.com/file/d/19h9OBaaSLLB9Ld5YYgxasLVn5PtUbEez/view?usp=sharing) (google drive. 99.9 MB zip). Example projects for UE4 and Blender may be found at the bottom of the page.
+Download the windows 10, (64 bit only) version [here](https://drive.google.com/file/d/19h9OBaaSLLB9Ld5YYgxasLVn5PtUbEez/view?usp=sharing) (google drive. 99.9 MB zip). WARNING: DUE TO PROBLEMS WITH THE METHOD I USE TO PACKAGE THE EXECUTABLE I'M CURRENTLY UNABLE TO UPDATE THIS BUILD AND THERE IS A KNOWN BUG THAT RENDERS COEFFICENT EXTRACTION SUB OPTIMAL IN CERTAIN CASES. AT THE TIME OF WRITING - IF ABLE TO - I RECOMMEND USING THE SCRIPTS HELD WITHIN THIS REPOSITORY RATHER THAN THE EXECTUABLE.
+
+Example projects for UE4 and Blender may be found at the bottom of the page.
 
 Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running a windows 10 (with a 64 bit installation...which it probably is) I recommend trying the exectuable linked above. This executable consists of the code contained within this reposititory passed through pyinstaller for packaging. I'm working on a full install process for windows/mac/linux to further lower the barrier to entry but this may take a while.
 
