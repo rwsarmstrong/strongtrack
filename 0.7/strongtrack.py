@@ -210,6 +210,8 @@ class VideoThread(QThread):
                             points = findLandmarks(frame_scaled, window.predictor)
                         else:
                             points = window.genericFace*factor
+                            genericfactor = window.getGenericFactor()
+                            points = window.genericFace * genericfactor
 
                         if window.stream == True:
 
