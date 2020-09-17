@@ -339,8 +339,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             frame_store = np.array(frame_scaled)
 
             if showPoints == True:
-    
-                points = findLandmarks(frame_scaled, window.predictor)
+                if self.model == True:
+                    points = findLandmarks(frame_scaled, window.predictor)
             
                 frame_scaled = updateFramePoints(points)
             
