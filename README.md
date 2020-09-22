@@ -4,7 +4,7 @@ Example projects for UE4 and Blender may be found at the bottom of the page.
 
 Hi there! Here you can find code for StrongTrack, a tool for landmark annotation and finding coefficents for facial animation. If installing python/libraries (see below) is intimidating and you're running a windows 10 (with a 64 bit installation...which it probably is) I recommend trying the exectuable linked above. This executable consists of the code contained within this reposititory passed through pyinstaller for packaging. I'm working on a full install process for windows/mac/linux to further lower the barrier to entry but this may take a while.
 
-**This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). The resulting training files may continue to be usable in later versions but I cannot guarantee this. Apologies**
+**This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). The resulting training files may continue to be usable in later versions but I cannot guarantee this.**
 
 ![Screenshot](https://github.com/rwsarmstrong/strongtrack/blob/0.8/0.8/images/screenshot.jpg)
 
