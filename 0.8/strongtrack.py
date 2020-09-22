@@ -213,6 +213,15 @@ def getTimeInfo(fps, length):
 
     return total_diff, total_int
 
+def scaleDlibBox(box, factor):
+    left = box.left()*factor
+    top = box.top()*factor
+    right = box.right()*factor
+    bottom = box.bottom()*factor
+    scaledBox = dlib.rectangle(int(left),int(top),int(right),int(bottom))
+
+    return scaledBox
+
 class VideoThread(QThread):
     
     pixmap_signal = pyqtSignal(np.ndarray)
@@ -278,7 +287,8 @@ class VideoThread(QThread):
                                     if len(dets) != 0:
                                         window.box = dets[0]
                                 shape = window.predictor(frame_raw, window.box)
-                                frame_scaled = render.drawBox(frame_scaled, window.box)
+                                boxToDraw = scaleDlibBox(window.box, factor)
+                                frame_scaled = render.drawBox(frame_scaled, boxToDraw)
 
                                 points = getPointsWebcamScale(shape, factor)
 
