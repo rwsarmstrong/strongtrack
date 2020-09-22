@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1057</width>
-    <height>967</height>
+    <width>1021</width>
+    <height>979</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -313,6 +313,16 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="button_lockWebcamBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Lock Box position</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
@@ -328,7 +338,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1057</width>
+     <width>1021</width>
      <height>21</height>
     </rect>
    </property>
