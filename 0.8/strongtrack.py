@@ -17,6 +17,7 @@ import cv2
 import dlib
 import os
 import time
+from datetime import datetime
 
 # Get the GUI
 from ui import Ui_MainWindow
@@ -269,15 +270,16 @@ class VideoThread(QThread):
 
                             #...or the webcam mode
                             else:
+                                points = window.genericFace * factor
                                 gray = cv2.cvtColor(frame_raw, cv2.COLOR_BGR2GRAY)
+
                                 dets = window.detector(gray, 0)
-
                                 if len(dets) != 0:
-                                    box = dets[0]
-                                    shape = window.predictor(frame_raw, box)
-                                    frame_scaled = render.drawBox(frame_scaled, box)
+                                    window.box = dets[0]
+                                shape = window.predictor(frame_raw, window.box)
+                                frame_scaled = render.drawBox(frame_scaled, window.box)
 
-                                    points = getPointsWebcamScale(shape, factor)
+                                points = getPointsWebcamScale(shape, factor)
 
 
                         else:
@@ -304,6 +306,8 @@ class VideoThread(QThread):
                                                                                        window.keydrops)
 
                             morphs = coeffsToMorphs(mouth_coeffs, browscoeffs, points)
+                            window.record_morph_store.append(morphs)
+
 
                         # For debugging the accuracy morph extraction by reconstruction the face points based on coeffs
                         if window.debug == True:
@@ -342,7 +346,7 @@ class VideoThread(QThread):
                 time.sleep(total_diff/1000)
                 k = cv2.waitKey(total_int)
             else:
-                k = cv2.waitKey(3)
+                k = cv2.waitKey(10)
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -366,6 +370,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pretrained = False
         self.keydrops = np.zeros((10, 68, 2))
         self.fps = 60
+        self.box = dlib.rectangle(0,0,10,10)
 
         self.detector = dlib.get_frontal_face_detector()
         self.guessPredictor = dlib.shape_predictor('data/guesspredictor.dat')
@@ -486,17 +491,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.button_record.setText('Record webcam video and animation')
             self.record = False
             self.writer.release()
+            morphs_store = np.array(self.record_morph_store)
+            fileName = self.record_name + '_morphs.txt'
+            np.savetxt(fileName, morphs_store)
+
+            print('export successful')
 
         else:
             textFramerate, okPressedFramerate = QInputDialog.getInt(self, "Enter Framerate","Framerate", QLineEdit.Normal, 30)
             if okPressedFramerate == True:
                 self.button_record.setText('Stop recording')
-                name = 'webcam_record.avi'
+                now = datetime.now()
+                dt_string = now.strftime("_%d%m%Y_%H%M%S")
+                self.record_name = 'projects/video/webcam_record' + dt_string
                 framerate = textFramerate
                 resolution = (frame_raw.shape[1], frame_raw.shape[0])
-                self.writer = cv2.VideoWriter(name, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), framerate,resolution)
-
-                # IS THIS NEEDED? probably yes
+                self.writer = cv2.VideoWriter(self.record_name + '.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), framerate,resolution)
                 self.prepKeyposes()
 
                 self.record = True
