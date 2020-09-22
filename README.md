@@ -6,7 +6,7 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 
 **This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more). The resulting training files may continue to be usable in later versions but I cannot guarantee this. Apologies**
 
-![Screenshot](/0.8/projects/images/screenshot.jpg)
+![Screenshot](/projects/images/screenshot.jpg)
 
 # 0.8 Release Notes
 * Pretrained model that allows for the ability to 'guess' landmarks for the whole face or mouth seperately, rather than manual placement.
