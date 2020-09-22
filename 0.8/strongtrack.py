@@ -273,9 +273,10 @@ class VideoThread(QThread):
                                 points = window.genericFace * factor
                                 gray = cv2.cvtColor(frame_raw, cv2.COLOR_BGR2GRAY)
 
-                                dets = window.detector(gray, 0)
-                                if len(dets) != 0:
-                                    window.box = dets[0]
+                                if window.trackBox == True:
+                                    dets = window.detector(gray, 0)
+                                    if len(dets) != 0:
+                                        window.box = dets[0]
                                 shape = window.predictor(frame_raw, window.box)
                                 frame_scaled = render.drawBox(frame_scaled, window.box)
 
@@ -387,7 +388,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #Debug
         self.overlayNeutral = False
         self.debug = False
-
+        self.trackBox = True
         self.record = False
 
 
@@ -418,6 +419,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_mouth.clicked.connect(self.showGuessMouth)
         self.button_setKeypose.clicked.connect(self.setKeypose)
         self.button_record.clicked.connect(self.recordWebcam)
+        self.button_lockWebcamBox.clicked.connect(self.lockWebcamBox)
 
         #Shortcuts
         self.shortcut = QShortcut(QKeySequence("space"), self)
@@ -434,15 +436,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.shortcut.activated.connect(self.prevFrame)
         self.shortcut = QShortcut(QKeySequence("d"), self)
         self.shortcut.activated.connect(self.nextFrame)
-        #self.shortcut = QShortcut(QKeySequence("p"), self)
-        #self.shortcut.activated.connect(self.debugSolution)
+        self.shortcut = QShortcut(QKeySequence("p"), self)
+        self.shortcut.activated.connect(self.debugSolution)
         self.shortcut = QShortcut(QKeySequence("g"), self)
         self.shortcut.activated.connect(self.showGuess)
         self.shortcut = QShortcut(QKeySequence("r"), self)
         self.shortcut.activated.connect(self.recordWebcam)
 
+
         self.button_record.hide()
+        self.button_lockWebcamBox.hide()
         self.show()
+
+    def lockWebcamBox(self):
+        if self.trackBox == True:
+            self.trackBox = False
+            self.button_lockWebcamBox.setText('Restart box tracking')
+        else:
+            self.trackBox = True
+            self.button_lockWebcamBox.setText('Lock Box position ')
 
     def showGuess(self):
 
@@ -496,6 +508,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             np.savetxt(fileName, morphs_store)
 
             print('export successful')
+            self.button_lockWebcamBox.setEnabled(False)
+            self.trackBox = True
+            self.button_lockWebcamBox.setText('Lock Box position ')
 
         else:
             textFramerate, okPressedFramerate = QInputDialog.getInt(self, "Enter Framerate","Framerate", QLineEdit.Normal, 30)
@@ -508,6 +523,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 resolution = (frame_raw.shape[1], frame_raw.shape[0])
                 self.writer = cv2.VideoWriter(self.record_name + '.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), framerate,resolution)
                 self.prepKeyposes()
+
+                self.button_lockWebcamBox.setEnabled(True)
 
                 self.record = True
                 self.record_morph_store =[]
@@ -977,6 +994,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.button_nextFrame.hide()
             self.horizontalSlider.hide()
             self.button_record.show()
+            self.button_lockWebcamBox.show()
             self.button_record.setEnabled(True)
 
     def openVideo(self):
@@ -1019,6 +1037,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.button_nextFrame.show()
                     self.horizontalSlider.show()
                     self.button_record.hide()
+                    self.button_lockWebcamBox.hide()
 
             else:
                 message = QMessageBox.about(self, 'Open Video', 'File extension not valid. StrongTrack currently supports files with mp4, avi and mov extensions')
