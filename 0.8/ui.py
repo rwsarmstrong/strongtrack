@@ -185,8 +185,12 @@ class Ui_MainWindow(object):
         self.actionRecord_Webcam = QtWidgets.QAction(MainWindow)
         self.actionRecord_Webcam.setEnabled(False)
         self.actionRecord_Webcam.setObjectName("actionRecord_Webcam")
+        self.actionOpen_Webcam_Video_recorded = QtWidgets.QAction(MainWindow)
+        self.actionOpen_Webcam_Video_recorded.setObjectName("actionOpen_Webcam_Video_recorded")
         self.menuFile.addAction(self.actionOpen_Video)
+        self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionOpen_Webcam)
+        self.menuFile.addAction(self.actionOpen_Webcam_Video_recorded)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionNew_Model)
         self.menuFile.addAction(self.actionLoad_Model)
@@ -203,7 +207,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "StrongTrack 0.7.1"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "StrongTrack 0.8"))
         self.label_2.setText(_translate("MainWindow", "Training Landmarks:"))
         self.button_landmarks.setText(_translate("MainWindow", "Log Landmarks (F)"))
         self.button_train.setText(_translate("MainWindow", "Train Model (T)"))
@@ -241,8 +245,9 @@ class Ui_MainWindow(object):
         self.actionDocumentation.setText(_translate("MainWindow", "Docs (web link)"))
         self.actionLicense.setText(_translate("MainWindow", "License"))
         self.actionQuick_Video.setText(_translate("MainWindow", "Quick Video"))
-        self.actionOpen_Webcam.setText(_translate("MainWindow", "Open Webcam (experimental)"))
+        self.actionOpen_Webcam.setText(_translate("MainWindow", "Open Webcam Feed (experimental)"))
         self.actionRecord_Webcam.setText(_translate("MainWindow", "Record Webcam"))
+        self.actionOpen_Webcam_Video_recorded.setText(_translate("MainWindow", "Open Webcam Video (recorded)..."))
 
 
 if __name__ == "__main__":
