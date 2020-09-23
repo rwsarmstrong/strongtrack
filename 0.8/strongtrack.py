@@ -6,11 +6,12 @@ from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout, QSlider,
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
 
-
+#Import other strongtrack functions from files
 import render_functions as render
 import xml_functions as rx
 import decomp_functions as decomp
 
+#Import python libraries
 from pythonosc import udp_client
 import numpy as np
 import cv2
@@ -22,6 +23,7 @@ from datetime import datetime
 # Get the GUI
 from ui import Ui_MainWindow
 
+### Declaring some variables. These probably should be consolidated with the other variables in main_window ###
 # Frame as original output. Used for calculating scales.
 frame_raw = []
 
@@ -274,7 +276,7 @@ class VideoThread(QThread):
                         if window.model == True:
 
                             # Use either the prerecorded mode...
-                            if window.webcam == False:
+                            if window.webcamBox == False:
                                 points = findLandmarks(frame_scaled, window.predictor)
 
                             #...or the webcam mode
@@ -291,7 +293,6 @@ class VideoThread(QThread):
                                 frame_scaled = render.drawBox(frame_scaled, boxToDraw)
 
                                 points = getPointsWebcamScale(shape, factor)
-
 
                         else:
 
@@ -319,7 +320,6 @@ class VideoThread(QThread):
                             morphs = coeffsToMorphs(mouth_coeffs, browscoeffs, points)
                             window.record_morph_store.append(morphs)
 
-
                         # For debugging the accuracy morph extraction by reconstruction the face points based on coeffs
                         if window.debug == True:
                             print('showing debug')
@@ -343,10 +343,10 @@ class VideoThread(QThread):
 
                         self.pixmap_signal.emit(frame_scaled)
 
-                    if window.webcam == False:
-                        frame_num = frame_num+1
+                    #if window.webcam == False:
+                    frame_num = frame_num+1
 
-            if window.webcam == False:
+            if window.webcamBox == False:
                 #Handles syncronisation of the video footage, taking into account the time taken to complete process
                 #Get End time
                 end = time.time()
@@ -358,6 +358,7 @@ class VideoThread(QThread):
                 k = cv2.waitKey(total_int)
             else:
                 k = cv2.waitKey(10)
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -377,7 +378,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.genericFace = np.load('data/baseface.npy')
         self.model = False
         self.stream = False
-        self.webcam = False
+        self.webcamBox = False
+        self.webcamLive = False
         self.pretrained = False
         self.keydrops = np.zeros((10, 68, 2))
         self.fps = 60
@@ -401,13 +403,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.trackBox = True
         self.record = False
 
-
         #Slider
         self.horizontalSlider.valueChanged.connect(self.moveBar)
         
         #Menu Buttons
         self.actionQuick_Video.triggered.connect(self.setVideo)
-        self.actionOpen_Video.triggered.connect(self.openVideo)
+        self.actionOpen_Video.triggered.connect(self.openNormalVideo)
+        self.actionOpen_Webcam_Video_recorded.triggered.connect(self.openWebcamVideo)
         self.actionOpen_Webcam.triggered.connect(self.openWebcam)
         self.actionPrevious_Model.triggered.connect(self.previousModel)
         self.actionNew_Model.triggered.connect(self.newModel)
@@ -415,7 +417,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionExit.triggered.connect(self.quit)
         self.actionExport.triggered.connect(self.export)
         self.actionStream_OSC.triggered.connect(self.streamOSC)
-
         
         #Buttons
         self.button_playPause.clicked.connect(self.pause)
@@ -452,7 +453,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.shortcut.activated.connect(self.showGuess)
         self.shortcut = QShortcut(QKeySequence("r"), self)
         self.shortcut.activated.connect(self.recordWebcam)
-
 
         self.button_record.hide()
         self.button_lockWebcamBox.hide()
@@ -563,6 +563,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         global points
         global frame_raw
         global frame_store
+        global frame_scaled
 
         if play == True:
             play = False
@@ -586,9 +587,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if showPoints == True:
 
                 if self.model == True:
-                    points = findLandmarks(frame_scaled, window.predictor)
+                    if self.webcamBox ==True:
 
-                frame_scaled = updateFramePoints(points)
+                        if window.trackBox == True:
+                            gray = cv2.cvtColor(frame_raw, cv2.COLOR_BGR2GRAY)
+                            dets = window.detector(gray, 0)
+                            if len(dets) != 0:
+                                window.box = dets[0]
+
+                        shape = window.predictor(frame_raw, window.box)
+                        boxToDraw = scaleDlibBox(window.box, factor)
+                        frame_scaled = updateFramePoints(points)
+                        frame_scaled = render.drawBox(frame_scaled, boxToDraw)
+
+                        points = getPointsWebcamScale(shape, factor)
+
+                    else:
+                        points = findLandmarks(frame_scaled, window.predictor)
+
+                        frame_scaled = updateFramePoints(points)
 
             self.update_image_paused(frame_scaled)
 
@@ -689,7 +706,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.model == False:
             self.model = True
 
-        if self.webcam == True:
+        if self.webcamBox == True:
             showPoints = True
 
         self.update_image_paused(frame_store)
@@ -697,7 +714,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def initiateTrain(self):
         global showPoints
 
-        if showPoints == True or self.webcam == True:
+        if showPoints == True or self.webcamBox == True:
 
             frame_scaled = frame_store.copy()
             x_offset = int((frame_scaled.shape[1] / 2) - (self.training.shape[1] / 2))
@@ -712,7 +729,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if showPoints ==True:
             if play ==False:
-                if self.webcam == False:
+                if self.webcamBox == False:
                     box = getEasyBox(frame_scaled)
                     filename = os.path.splitext(os.path.split(window.video_path)[1])[0]
                     filepath = 'images/{}_frame{}.jpg'.format(filename,frame_num)
@@ -786,7 +803,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 self.pretrained = False
 
-                if self.webcam == False:
+                if self.webcamBox == False:
                     f = open('data/previousModel.txt', "w")
                 else:
                     f = open('data/previousModelWebcam.txt', "w")
@@ -798,7 +815,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def previousModel(self):
 
-        if self.webcam == False:
+        if self.webcamBox == False:
             f = open("data/previousModel.txt", "r")
         else:
             f = open("data/previousModelWebcam.txt", "r")
@@ -858,7 +875,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.actionStream_OSC.setEnabled(True)
 
-        if self.webcam == False:
+        if self.webcamLive == False:
             self.actionExport.setEnabled(True)
 
         if play == False:
@@ -884,7 +901,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             frame_store = np.array(frame_scaled)
 
             if self.model == True:
-                if self.webcam == False:
+                if self.webcamBox == False:
                     points = findLandmarks(frame_scaled, window.predictor)
                 else:
                     dets = window.detector(frame_scaled, 0)
@@ -919,7 +936,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # start thread
         self.thread.start()
 
-        if self.webcam == False:
+        if self.webcamBox == False:
             self.updateUIVideo()
         else:
             self.updateUIWebcam()
@@ -929,7 +946,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def updateUIWebcam(self):
         print('updating for webcam')
         self.horizontalSlider.setValue(0)
-
 
         # Activate menu options
         self.actionNew_Model.setEnabled(True)
@@ -990,7 +1006,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.cap = cv2.VideoCapture(0)
 
-            self.webcam = True
+            self.webcamBox = True
+            self.webcamLive = True
 
             # If video thread hasn't been started, start it
             if self.displayingVideo == False:
@@ -1006,17 +1023,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.button_record.show()
             self.button_lockWebcamBox.show()
             self.button_record.setEnabled(True)
+            self.horizontalSlider.hide()
 
-    def openVideo(self):
-        global factor
-        global play
+    def openWebcamVideo(self):
         global showPoints
 
-        if self.webcam == True:
-            self.webcam = False
+        self.openVideo()
+
+        if self.webcamBox ==False:
+            self.webcamBox = True
             self.model = False
             showPoints = False
             self.actionStream_OSC.setEnabled(False)
+            self.actionExport.setEnabled(False)
+
+    def openNormalVideo(self):
+        global showPoints
+
+        self.openVideo()
+
+        if self.webcamBox == True:
+            self.webcamBox = False
+            self.model = False
+            showPoints = False
+            self.actionStream_OSC.setEnabled(False)
+            self.actionExport.setEnabled(False)
+
+    def openVideo(self):
+
+        global factor
+        global play
+        global showPoints
 
         # Ensure video is paused if one is already loaded
         play = False
@@ -1029,7 +1066,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.video_path = fileName
                 self.cap = cv2.VideoCapture(self.video_path)
                 self.fps = self.cap.get(cv2.CAP_PROP_FPS)
-                self.webcam = False
+
                 # If video thread hasn't been started, start it
                 if self.displayingVideo == False:
                     self.setVideo()
@@ -1048,6 +1085,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.horizontalSlider.show()
                     self.button_record.hide()
                     self.button_lockWebcamBox.hide()
+                    self.horizontalSlider.show()
+
+                    self.webcamLive = False
 
             else:
                 message = QMessageBox.about(self, 'Open Video', 'File extension not valid. StrongTrack currently supports files with mp4, avi and mov extensions')
@@ -1260,7 +1300,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 if ret == True:
                     print(frame_num)
-                    points = findLandmarks(frame, self.predictor)
+
+                    if self.webcamBox == False:
+                        points = findLandmarks(frame, self.predictor)
+                    else:
+                        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                        dets = window.detector(gray, 0)
+                        if len(dets) != 0:
+                            self.box = dets[0]
+
+                        shape = window.predictor(frame, self.box)
+                        points = getPointsWebcamScale(shape, factor)
+
                     mouth_coeffs, brow_coeffs, _, _ = decomp.findCoeffsAll(points,self.keyposes, self.keydrops)
                     morphs = coeffsToMorphs(mouth_coeffs, brow_coeffs, points)
                     morphs_store.append(morphs)
@@ -1288,7 +1339,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                    QLineEdit.Normal, 5005)
             if okPressedPort == True:
 
-                if self.model == True or self.webcam == True:
+                if self.model == True or self.webcamBox == True:
 
                     self.prepKeyposes()
 
@@ -1336,7 +1387,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.button_mouth.setEnabled(True)
                     self.button_train.setEnabled(True)
 
-                if self.webcam == True:
+                if self.webcamBox == True:
                     self.button_landmarks.setEnabled(True)
                     self.button_train.setEnabled(True)
 
@@ -1361,7 +1412,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.button_guess.setEnabled(False)
                 self.button_mouth.setEnabled(False)
 
-            if self.webcam == True:
+            if self.webcamBox == True:
                 self.button_landmarks.setEnabled(False)
                 self.button_train.setEnabled(False)
 
@@ -1387,7 +1438,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def update_image_paused(self, cv_frame):
 
         qt_frame = self.convert_cv_qt(cv_frame)
-        print('updating')
+
         self.label.setPixmap(qt_frame)
         
         if play == True:
