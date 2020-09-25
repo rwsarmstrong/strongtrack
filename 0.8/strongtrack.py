@@ -938,21 +938,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             f = open(filepath, "r")
             fileName = f.read()
 
-            check = rx.verifyXML(fileName)
+            if os.path.exists(fileName):
+                check = rx.verifyXML(fileName)
 
-            if check == True:
-                self.xml_path = fileName
+                if check == True:
+                    self.xml_path = fileName
 
-                #Strip out the project name from the full filename
-                self.project_name = os.path.splitext(os.path.split(fileName)[1])[0]
-                self.project_name = self.project_name[:-7]
+                    #Strip out the project name from the full filename
+                    self.project_name = os.path.splitext(os.path.split(fileName)[1])[0]
+                    self.project_name = self.project_name[:-7]
 
-                self.checkPredictor()
+                    self.checkPredictor()
 
+                else:
+                    print('This XML file is not associated with strong track.')
             else:
-                print('This XML file is not associated with strong track.')
+                print('Filepath not valid. XML file has probably been moved.')
         else:
-            print('Filepath not valid. File has probably been moved.')
+            print('Filepath not valid. Strongtrack config file has probably been moved.')
 
     def checkPredictor(self):
         global showPoints
