@@ -352,9 +352,11 @@ class VideoThread(QThread):
                 end = time.time()
                 #Get duration of process in milliseconds
                 length = (end-start)*1000
-                total_diff, total_int = getTimeInfo(window.fps, length)
 
-                time.sleep(total_diff/1000)
+                total_diff, total_int = getTimeInfo(window.fps, length)
+                ###SOMETHING IS WRONG HERE. NOT EXACTLY RIGHT. WILL COMMENT OUT FOR NOW ###
+                #time.sleep(total_diff/1000)
+
                 k = cv2.waitKey(total_int)
             else:
                 k = cv2.waitKey(10)
@@ -715,7 +717,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 coeffs, browcoeffs, _, _ = decomp.findCoeffsAll(points, window.keyposes, self.keydrops)
 
                 morphs = coeffsToMorphs(coeffs, browcoeffs, points)
-                client.send_message("/filter", morphs)
+                self.client.send_message("/filter", morphs)
 
     def prevFrame(self):
         global frame_num
