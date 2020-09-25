@@ -513,6 +513,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label_keyposes.setEnabled(False)
             self.label_keyposesflavour.show()
             self.label_landmarks.setEnabled(False)
+            self.label_landmarksflavour.show()
             self.label_landmarks.setText('Landmarks: Training sufficient')
             self.label_landmarksflavour.setText('Continue logging and training landmarks if points are inaccurate')
             self.label_exportready.setText('Ready for export or stream')
@@ -1224,25 +1225,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                     self.webcamLive = False
 
-                if config == 'normal':
+                    self.model = False
+                    showPoints = False
+
                     self.resetLabels()
+
+                if config == 'normal':
                     self.updateLabels('video_recording')
+                    self.webcamBox = False
 
-                    if self.webcamBox == True:
-                        self.webcamBox = False
-                        self.model = False
-                        showPoints = False
-                        self.actionStream_OSC.setEnabled(False)
-                        self.actionExport.setEnabled(False)
                 else:
-                    self.updateLabels('video_webcam_recording')
 
-                    if self.webcamBox == False:
-                        self.webcamBox = True
-                        self.model = False
-                        showPoints = False
-                        self.actionStream_OSC.setEnabled(False)
-                        self.actionExport.setEnabled(False)
+                    self.updateLabels('video_webcam_recording')
+                    self.webcamBox = True
 
             else:
                 message = QMessageBox.about(self, 'Open Video', 'File extension not valid. StrongTrack currently supports files with mp4, avi and mov extensions')
@@ -1393,7 +1388,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         rawwidth = frame_raw.shape[1]
         rawheight = frame_raw.shape[0]
 
-        if rawwidth != 0:
+        if rawwidth != 0 and rawheight != 0 and holderheight != 0:
             rawratio = rawwidth / rawheight
             holderratio = holderwidth / holderheight
 
@@ -1405,6 +1400,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 factor = holderheight / rawheight
 
         else:
+            print('Division by zero was about to happen. Fix this.')
             factor = 1
 
         return factor
