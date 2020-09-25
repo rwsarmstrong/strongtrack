@@ -14,7 +14,8 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 * Pretrained model that allows for the ability to 'guess' landmarks for the whole face or mouth seperately, rather than manual placement.
 * Initial webcam support for recording and streaming animation as well as record and reopen video.
 * Removal of non function eye tracking to avoid confusion (eye tracking to be added in 0.9 or 1.0 depending on development of pretrained model).
-* Improved UI feedback for certain actions such as training or alerts when creating duplicate files
+* Improved UI feedback for certain actions such as training or alerts when creating duplicate files.
+* Better automatic enabling and disabling of buttons/options that would lead to crashes if pressed at times prior to intended time.
 * Improved handling of video with different frame rates
 * Option to open 'previous model' instead of having to manually selected each time when using a previously prepared model
 * Minor bug fixes and UI clean up.
