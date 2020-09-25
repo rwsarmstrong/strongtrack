@@ -170,7 +170,7 @@ def trainModel(xml_path):
         
     dlib.train_shape_predictor(xml_path, window.predictor_name, window.options)
     predictor = dlib.shape_predictor(window.predictor_name)
-    
+
     return predictor
 
 #Handles update of frame for mouse and pause events
@@ -359,7 +359,6 @@ class VideoThread(QThread):
             else:
                 k = cv2.waitKey(10)
 
-
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self, *args, **kwargs):
@@ -380,7 +379,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stream = False
         self.webcamBox = False
         self.webcamLive = False
-        self.pretrained = False
+        #self.pretrained = False
         self.keydrops = np.zeros((10, 68, 2))
         self.fps = 60
         self.box = dlib.rectangle(0,0,10,10)
@@ -402,7 +401,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.debug = False
         self.trackBox = True
         self.record = False
-
+        self.state = ('nothing')
         #Slider
         self.horizontalSlider.valueChanged.connect(self.moveBar)
         
@@ -448,15 +447,118 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.shortcut = QShortcut(QKeySequence("d"), self)
         self.shortcut.activated.connect(self.nextFrame)
         self.shortcut = QShortcut(QKeySequence("p"), self)
-        self.shortcut.activated.connect(self.debugSolution)
+        self.shortcut.activated.connect(self.resetLabels)
         self.shortcut = QShortcut(QKeySequence("g"), self)
         self.shortcut.activated.connect(self.showGuess)
+        self.shortcut = QShortcut(QKeySequence("m"), self)
+        self.shortcut.activated.connect(self.showGuessMouth)
         self.shortcut = QShortcut(QKeySequence("r"), self)
         self.shortcut.activated.connect(self.recordWebcam)
 
         self.button_record.hide()
         self.button_lockWebcamBox.hide()
+        self.resetLabels()
         self.show()
+
+    def updateLabels(self, state):
+        global frame_store
+
+        self.state = state
+
+        if state == 'nothing':
+            self.label_keyposes.setEnabled(True)
+            self.label_landmarks.setEnabled(True)
+            self.label_videotitle.setEnabled(True)
+            self.label_videoflavour.show()
+            self.label_landmarksflavour.hide()
+            self.label_keyposesflavour.hide()
+        elif state == 'video_webcam_feed':
+            self.label_videotitle.setEnabled(False)
+            self.label_videotitle.setText('Video: Webcam feed')
+            self.label_videoflavour.hide()
+            self.label_landmarksflavour.show()
+        elif state == 'video_recording':
+            self.label_videotitle.setEnabled(False)
+            self.label_videotitle.setText('Video: Opened')
+            self.label_videoflavour.hide()
+            self.label_landmarksflavour.show()
+        elif state == 'video_webcam_recording':
+            self.label_videotitle.setEnabled(False)
+            self.label_videotitle.setText('Video: Webcam video')
+            self.label_videoflavour.hide()
+            self.label_landmarksflavour.show()
+        elif state == 'awaiting neutral':
+            self.label_landmarksflavour.show()
+            self.label_landmarks.setText('Landmarks: Awaiting neutral')
+            self.label_landmarksflavour.setText('Find a frame where the subject has a neutral expression, place landmarks and log them with F')
+        elif state == 'landmarks added':
+            self.label_landmarks.setText('Landmarks: Not trained')
+            self.label_landmarksflavour.setText('Continue adding different expressions and press T to begin the first training')
+        elif state == 'landmarks trained':
+            self.label_landmarks.setText('Landmarks: Initial training')
+            self.label_landmarksflavour.setText('Log at least 5 (very different) expressions and press T whenever you want to update the training')
+        elif state == 'landmarks trained enough':
+            self.label_landmarks.setText('Landmarks: Training sufficient')
+            self.label_landmarksflavour.setText('Continue logging and training landmarks if points are inaccurate')
+            self.label_landmarks.setEnabled(False)
+            self.label_keyposesflavour.show()
+            self.comboBox.setEnabled(True)
+            self.button_setKeypose.setEnabled(True)
+        elif state == 'First keypose added':
+            self.label_keyposesflavour.setText('Add at least 5 keyposes to get a responsive animation export. Not all keyposes need setting')
+        elif state == 'Keyposes added enough':
+            self.label_exportready.setEnabled(False)
+            self.label_keyposes.setEnabled(False)
+            self.label_keyposesflavour.show()
+            self.label_landmarks.setEnabled(False)
+            self.label_landmarks.setText('Landmarks: Training sufficient')
+            self.label_landmarksflavour.setText('Continue logging and training landmarks if points are inaccurate')
+            self.label_exportready.setText('Ready for export or stream')
+            self.label_keyposes.setText('Keyposes: Set')
+            self.label_keyposesflavour.setText('Sufficient keyposes added for a responsive animation export.')
+
+            self.actionExport.setEnabled(True)
+            self.actionStream_OSC.setEnabled(True)
+
+        else:
+            print('error: label update not recognised')
+
+
+    def resetLabels(self):
+        self.label_videoflavour.show()
+        self.label_landmarksflavour.hide()
+        self.label_keyposesflavour.hide()
+        self.label_keyposes.setEnabled(True)
+        self.label_landmarks.setEnabled(True)
+        self.label_exportready.setEnabled(True)
+        self.label_videotitle.setEnabled(True)
+        self.label_exportready.setText('Not ready for export or stream')
+        self.label_videoflavour.setText('Open the file menu and open a video or webcam feed')
+        self.label_landmarksflavour.setText('Open the file menu and either create a new model or load a previously created one.')
+        self.label_keyposesflavour.setText('Look at the extraction poses drop-down menu and have the subject in the video or feed pull these poses. Pause the video/feed and set the keypose to the matching expression')
+        self.actionExport.setEnabled(False)
+        self.actionStream_OSC.setEnabled(False)
+        self.comboBox.setEnabled(False)
+        self.button_setKeypose.setEnabled(False)
+        self.button_train.setEnabled(False)
+        self.button_neutral.setEnabled(False)
+
+    def resetLandmarkKeyposeLabels(self):
+
+        self.label_landmarksflavour.hide()
+        self.label_keyposesflavour.hide()
+        self.label_keyposes.setEnabled(True)
+        self.label_landmarks.setEnabled(True)
+        self.label_exportready.setEnabled(True)
+        self.label_exportready.setText('Not ready for export or stream')
+        self.label_landmarksflavour.setText('Open the file menu and either create a new model or load a previously created one.')
+        self.label_keyposesflavour.setText('Look at the extraction poses drop-down menu and have the subject in the video or feed pull these poses. Pause the video/feed and set the keypose to the matching expression')
+        self.actionExport.setEnabled(False)
+        self.actionStream_OSC.setEnabled(False)
+        self.comboBox.setEnabled(False)
+        self.button_setKeypose.setEnabled(False)
+        self.button_train.setEnabled(False)
+        self.button_neutral.setEnabled(False)
 
     def lockWebcamBox(self):
         if self.trackBox == True:
@@ -709,6 +811,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.webcamBox == True:
             showPoints = True
 
+        check = rx.convertXMLPoints(self.xml_path)
+
+        if self.state == 'landmarks added':
+            self.updateLabels('landmarks trained')
+            self.update_image_paused(frame_store)
+
+        if check.shape[0] >= 5 and self.state == 'landmarks trained':
+            self.updateLabels('landmarks trained enough')
+            self.update_image_paused(frame_store)
+
         self.update_image_paused(frame_store)
 
     def initiateTrain(self):
@@ -748,11 +860,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     cv2.imwrite('projects/' + filepath, frame_store)
                     print('Landmark added to model')
 
+                check = rx.convertXMLPoints(self.xml_path)
+
+                if check.shape[0] > 0 and self.state == 'awaiting neutral':
+                    self.updateLabels('landmarks added')
+                    self.button_train.setEnabled(True)
+
     def setKeypose(self):
         self.keydrops[self.comboBox.currentIndex()] = points
         print('Added keypose: ' + self.comboBox.currentText())
         export_filename = 'projects/' + self.project_name + '_keyposes.npy'
         np.save(export_filename, self.keydrops)
+        self.prepKeyposes()
+
+        if self.keyposes.shape[0] > 0 and self.state == 'landmarks trained enough':
+            self.updateLabels('First keypose added')
+
+        if self.keyposes.shape[0] > 4 and self.state == 'First keypose added':
+            self.updateLabels('Keyposes added enough')
 
     def newModel(self):
         global showPoints
@@ -790,7 +915,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         fileName, _ = QFileDialog.getOpenFileName(self,"Load model XML", "","XML Files (*.xml);")
 
         # Checks if it is associated with strongtrack
-
         if fileName:
             check = rx.verifyXML(fileName)
             if check == True:
@@ -800,41 +924,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.project_name = self.project_name[:-7]
 
                 self.checkPredictor()
-
-                self.pretrained = False
-
-                if self.webcamBox == False:
-                    f = open('data/previousModel.txt', "w")
-                else:
-                    f = open('data/previousModelWebcam.txt', "w")
-
-                f.write(fileName)
-
             else:
                 print('This XML file is not associated with strong track.')
 
     def previousModel(self):
 
         if self.webcamBox == False:
-            f = open("data/previousModel.txt", "r")
+            filepath = "data/previousModel.txt"
         else:
-            f = open("data/previousModelWebcam.txt", "r")
-        fileName = f.read()
+            filepath = "data/previousModelWebcam.txt"
 
-        check = rx.verifyXML(fileName)
+        if os.path.exists(filepath):
+            f = open(filepath, "r")
+            fileName = f.read()
 
-        if check == True:
-            self.xml_path = fileName
+            check = rx.verifyXML(fileName)
 
-            self.project_name = os.path.splitext(os.path.split(fileName)[1])[0]
-            self.project_name = self.project_name[:-7]
+            if check == True:
+                self.xml_path = fileName
 
-            self.checkPredictor()
+                #Strip out the project name from the full filename
+                self.project_name = os.path.splitext(os.path.split(fileName)[1])[0]
+                self.project_name = self.project_name[:-7]
 
-            self.pretrained = False
+                self.checkPredictor()
 
+            else:
+                print('This XML file is not associated with strong track.')
         else:
-            print('This XML file is not associated with strong track.')
+            print('Filepath not valid. File has probably been moved.')
 
     def checkPredictor(self):
         global showPoints
@@ -843,8 +961,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         global frame_store
         global points
 
+        self.resetLandmarkKeyposeLabels()
+
         self.predictor_name = 'projects/' + self.project_name + '_model.dat'
 
+        # Determine the nature of the provided xml file (or generate one if necessary)
         try:
             check = rx.convertXMLPoints(self.xml_path)
             print('XML file loaded successfully')
@@ -855,6 +976,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if check.shape[0] == 0:
             print('no face values found in xml. Setting generic face')
+            self.updateLabels('awaiting neutral')
             self.model = False
 
             showPoints = True
@@ -865,30 +987,47 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.predictor = dlib.shape_predictor(self.predictor_name)
             self.model = True
             showPoints = True
+
             #factor = self.label.width() / frame_raw.shape[1]
             try:
                 import_filename = 'projects/' + self.project_name + '_keyposes.npy'
                 self.keydrops = np.load(import_filename)
                 print('Keyposes extraction poses found and loaded')
+                self.updateLabels('Keyposes added enough')
+                self.updateLabels('landmarks trained enough')
+
             except:
                 print('No keyposes for extraction found')
+                check = rx.convertXMLPoints(self.xml_path)
+                if check.shape[0] >= 5:
+                    self.updateLabels('landmarks trained enough')
+                else:
+                    self.updateLabels('landmarks trained')
 
-        self.actionStream_OSC.setEnabled(True)
+        # Write filepath of model xml to data files
+        if self.webcamBox == False:
+            f = open('data/previousModel.txt', "w")
+        else:
+            f = open('data/previousModelWebcam.txt', "w")
 
-        if self.webcamLive == False:
-            self.actionExport.setEnabled(True)
+        f.write(self.xml_path)
 
+        # Update the UI with name of model
+        self.label_currentmodel.setText(self.project_name)
+
+        # Prepare things for the UI
         if play == False:
 
             self.button_landmarks.setEnabled(True)
             self.button_weld.setEnabled(True)
-            self.button_neutral.setEnabled(True)
-            self.comboBox.setEnabled(True)
-            self.button_setKeypose.setEnabled(True)
-            self.button_train.setEnabled(True)
-            self.button_train.setEnabled(True)
             self.button_guess.setEnabled(True)
             self.button_mouth.setEnabled(True)
+            if self.state != 'awaiting neutral':
+                self.button_train.setEnabled(True)
+                self.button_neutral.setEnabled(True)
+            if self.state == 'landmarks trained enough':
+                self.comboBox.setEnabled(True)
+                self.button_setKeypose.setEnabled(True)
 
             print('showing points first time')
 
@@ -922,6 +1061,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             frame_scaled = render.drawFace(frame_scaled, points, 'full')
 
             frame_scaled = render.drawControlPoints(points, frame_scaled, active)
+
             self.update_image_paused(frame_scaled)
 
     def setVideo(self):
@@ -1006,6 +1146,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.cap = cv2.VideoCapture(0)
 
+            self.resetLabels()
+
             self.webcamBox = True
             self.webcamLive = True
 
@@ -1025,31 +1167,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.button_record.setEnabled(True)
             self.horizontalSlider.hide()
 
+            self.updateLabels('video_webcam_feed')
+
     def openWebcamVideo(self):
         global showPoints
 
-        self.openVideo()
-
-        if self.webcamBox ==False:
-            self.webcamBox = True
-            self.model = False
-            showPoints = False
-            self.actionStream_OSC.setEnabled(False)
-            self.actionExport.setEnabled(False)
+        self.openVideo('webcam')
 
     def openNormalVideo(self):
         global showPoints
 
-        self.openVideo()
+        self.openVideo('normal')
 
-        if self.webcamBox == True:
-            self.webcamBox = False
-            self.model = False
-            showPoints = False
-            self.actionStream_OSC.setEnabled(False)
-            self.actionExport.setEnabled(False)
-
-    def openVideo(self):
+    def openVideo(self, config):
 
         global factor
         global play
@@ -1088,6 +1218,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.horizontalSlider.show()
 
                     self.webcamLive = False
+
+                if config == 'normal':
+                    self.resetLabels()
+                    self.updateLabels('video_recording')
+
+                    if self.webcamBox == True:
+                        self.webcamBox = False
+                        self.model = False
+                        showPoints = False
+                        self.actionStream_OSC.setEnabled(False)
+                        self.actionExport.setEnabled(False)
+                else:
+                    self.updateLabels('video_webcam_recording')
+
+                    if self.webcamBox == False:
+                        self.webcamBox = True
+                        self.model = False
+                        showPoints = False
+                        self.actionStream_OSC.setEnabled(False)
+                        self.actionExport.setEnabled(False)
 
             else:
                 message = QMessageBox.about(self, 'Open Video', 'File extension not valid. StrongTrack currently supports files with mp4, avi and mov extensions')
@@ -1232,20 +1382,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def getFactor(self):
         global frame_raw
 
+
         holderwidth = self.vidholder.geometry().width()
         holderheight = self.vidholder.geometry().height()
         rawwidth = frame_raw.shape[1]
         rawheight = frame_raw.shape[0]
 
-        rawratio = rawwidth / rawheight
-        holderratio = holderwidth / holderheight
+        if rawwidth != 0:
+            rawratio = rawwidth / rawheight
+            holderratio = holderwidth / holderheight
 
-        # >1 means landscape
-        if rawratio >= holderratio:
-            factor = holderwidth / rawwidth
+            # >1 means landscape
+            if rawratio >= holderratio:
+                factor = holderwidth / rawwidth
 
-        if rawratio < holderratio:
-            factor = holderheight / rawheight
+            if rawratio < holderratio:
+                factor = holderheight / rawheight
+
+        else:
+            factor = 1
+
         return factor
 
     def resizeEvent(self, event):
@@ -1326,6 +1482,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
     def streamOSC(self):
+        global play
 
         # Ensure video is paused if one is already loaded
         play = False
@@ -1377,32 +1534,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.button_prevFrame.setEnabled(True)
                 self.button_nextFrame.setEnabled(True)
 
-                if self.model == True:
+                if self.model == True or self.state == 'awaiting neutral' or self.state == 'landmarks added':
                     self.button_landmarks.setEnabled(True)
                     self.button_weld.setEnabled(True)
-                    self.button_neutral.setEnabled(True)
-                    self.comboBox.setEnabled(True)
-                    self.button_setKeypose.setEnabled(True)
                     self.button_guess.setEnabled(True)
                     self.button_mouth.setEnabled(True)
-                    self.button_train.setEnabled(True)
+
+                    if self.state != 'awaiting neutral':
+                        self.button_train.setEnabled(True)
+                        self.button_neutral.setEnabled(True)
+                    if self.state == 'landmarks trained enough' or self.state == 'First keypose added' or self.state == 'Keyposes added enough':
+                        self.comboBox.setEnabled(True)
+                        self.button_setKeypose.setEnabled(True)
 
                 if self.webcamBox == True:
                     self.button_landmarks.setEnabled(True)
                     self.button_train.setEnabled(True)
 
                 if showPoints == True:
-
                     frame_scaled = updateFramePoints(points)
                     self.update_image_paused(frame_scaled)
                         
         else:
             play = True
-           
+            print('pausing')
             self.button_prevFrame.setEnabled(False)
             self.button_nextFrame.setEnabled(False)
 
-            if self.model == True:
+            if self.model == True or self.state == 'awaiting neutral' or self.state == 'landmarks added':
                 self.button_landmarks.setEnabled(False)
                 self.button_weld.setEnabled(False)
                 self.button_neutral.setEnabled(False)
