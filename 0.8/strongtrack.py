@@ -57,7 +57,7 @@ def coeffsToMorphs(coeffs, browcoeffs, points):
 
     base = np.load('data/base.npy')
 
-    # Matched against the key drops so that set poses can be used to convert to morphs. The first is a placeholders due to them being neutral
+    # Matched against the key drops so that set poses can be used to convert to morphs. The first is a placeholder due to them being neutral
     cindices = np.array([np.zeros((50)), base[19], base[30] + base[31], base[30], base[31], base[36] + base[37], base[41], base[40], base[14], base[15], base[16], base[17],base[18]])
 
     #Set as zero to begin with
@@ -494,9 +494,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label_landmarks.setText('Landmarks: Awaiting neutral')
             self.label_landmarksflavour.setText('Find a frame where the subject has a neutral expression, place landmarks and log them with F')
         elif state == 'landmarks added':
+            self.label_landmarksflavour.show()
             self.label_landmarks.setText('Landmarks: Not trained')
             self.label_landmarksflavour.setText('Continue adding different expressions and press T to begin the first training')
         elif state == 'landmarks trained':
+            self.label_landmarksflavour.show()
             self.label_landmarks.setText('Landmarks: Initial training')
             self.label_landmarksflavour.setText('Log at least 5 (very different) expressions and press T whenever you want to update the training')
         elif state == 'landmarks trained enough':
@@ -507,6 +509,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.comboBox.setEnabled(True)
             self.button_setKeypose.setEnabled(True)
         elif state == 'First keypose added':
+            self.label_keyposesflavour.show()
             self.label_keyposesflavour.setText('Add at least 5 keyposes to get a responsive animation export. Not all keyposes need setting')
         elif state == 'Keyposes added enough':
             self.label_exportready.setEnabled(False)
@@ -545,6 +548,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_setKeypose.setEnabled(False)
         self.button_train.setEnabled(False)
         self.button_neutral.setEnabled(False)
+        self.button_lockWebcamBox.setEnabled(True)
 
     def resetLandmarkKeyposeLabels(self):
 
@@ -1023,7 +1027,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Prepare things for the UI
         if play == False:
-
+            self.button_lockWebcamBox.setEnabled(True)
             self.button_landmarks.setEnabled(True)
             self.button_weld.setEnabled(True)
             self.button_guess.setEnabled(True)
@@ -1143,37 +1147,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if play == True:
             play = False
 
-        buttonReply = QMessageBox.question( self, 'Open Webcam', "Opening Webcam may take about 10-15 seconds.", QMessageBox.Ok | QMessageBox.Cancel)
+        buttonReply = QMessageBox.question(self, 'Experimental', "This is an experimental feature. Live streaming of webcam is not currently as stable as using recorded video. There is however the option to record webcam video whilst streaming so as to return to and improve the footage later, which is what I'd recommend until this feature is better optimised in 0.9 or 1.0.",
+                                            QMessageBox.Ok | QMessageBox.Cancel)
 
         if buttonReply == QMessageBox.Ok:
-            if self.model == True:
-                self.model = False
-                showPoints = False
+            buttonReply2 = QMessageBox.question( self, 'Open Webcam', "Opening Webcam may take about 10-15 seconds.", QMessageBox.Ok | QMessageBox.Cancel)
 
-            self.cap = cv2.VideoCapture(0)
+            if buttonReply2 == QMessageBox.Ok:
+                if self.model == True:
+                    self.model = False
+                    showPoints = False
 
-            self.resetLabels()
+                self.cap = cv2.VideoCapture(0)
 
-            self.webcamBox = True
-            self.webcamLive = True
+                self.resetLabels()
 
-            # If video thread hasn't been started, start it
-            if self.displayingVideo == False:
-                self.setVideo()
+                self.webcamBox = True
+                self.webcamLive = True
 
-            play = True
-            self.predictor = dlib.shape_predictor('data/guesspredictor.dat')
-            self.actionStream_OSC.setEnabled(False)
-            self.actionExport.setEnabled(False)
-            self.button_prevFrame.hide()
-            self.button_nextFrame.hide()
-            self.horizontalSlider.hide()
-            self.button_record.show()
-            self.button_lockWebcamBox.show()
-            self.button_record.setEnabled(True)
-            self.horizontalSlider.hide()
+                # If video thread hasn't been started, start it
+                if self.displayingVideo == False:
+                    self.setVideo()
 
-            self.updateLabels('video_webcam_feed')
+                play = True
+                self.predictor = dlib.shape_predictor('data/guesspredictor.dat')
+                self.actionStream_OSC.setEnabled(False)
+                self.actionExport.setEnabled(False)
+                self.button_prevFrame.hide()
+                self.button_nextFrame.hide()
+                self.horizontalSlider.hide()
+                self.button_record.show()
+                self.button_lockWebcamBox.show()
+
+                self.button_record.setEnabled(True)
+                self.horizontalSlider.hide()
+
+                self.updateLabels('video_webcam_feed')
 
     def openWebcamVideo(self):
         global showPoints
