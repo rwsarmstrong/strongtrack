@@ -385,7 +385,7 @@ class Ui_MainWindow(object):
         self.actionDocumentation.setText(_translate("MainWindow", "Docs (web link)"))
         self.actionLicense.setText(_translate("MainWindow", "License"))
         self.actionQuick_Video.setText(_translate("MainWindow", "Quick Video"))
-        self.actionOpen_Webcam.setText(_translate("MainWindow", "Open Webcam Feed"))
+        self.actionOpen_Webcam.setText(_translate("MainWindow", "Open Webcam Feed (experimental)"))
         self.actionRecord_Webcam.setText(_translate("MainWindow", "Record Webcam"))
         self.actionOpen_Webcam_Video_recorded.setText(_translate("MainWindow", "Open Webcam Video (previously recorded)..."))
         self.actionOpen_Webcam_Video_recorded.setIconText(_translate("MainWindow", "Open Webcam Video (previously recorded)"))
