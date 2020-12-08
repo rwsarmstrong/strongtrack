@@ -210,6 +210,8 @@ class VideoThread(QThread):
                             points = findLandmarks(frame_scaled, window.predictor)
                         else:
                             points = window.genericFace*factor
+                            genericfactor = window.getGenericFactor()
+                            points = window.genericFace * genericfactor
 
                         if window.stream == True:
 
@@ -339,8 +341,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             frame_store = np.array(frame_scaled)
 
             if showPoints == True:
-    
-                points = findLandmarks(frame_scaled, window.predictor)
+                if self.model == True:
+                    points = findLandmarks(frame_scaled, window.predictor)
             
                 frame_scaled = updateFramePoints(points)
             
