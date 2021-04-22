@@ -1,6 +1,4 @@
-# StrongTrack v0.8
-
-Download the windows 10, (64 bit only) version [here](https://drive.google.com/file/d/1RSHuZtHB_VTBN37-PuapUriQn49aI6jJ/view?usp=sharing) (google drive. 114 MB zip).
+# StrongTrack v0.9 PREVIEW
 
 Example projects for UE4 and Blender may be found at the bottom of the page.
 
@@ -10,16 +8,8 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 
 ![Screenshot](https://github.com/rwsarmstrong/strongtrack/blob/0.8/0.8/images/screenshot.jpg)
 
-# 0.8 Release Notes
-* Pretrained model that allows for the ability to 'guess' landmarks for the whole face or mouth seperately, rather than manual placement.
-* Initial webcam support for recording and streaming animation as well as record and reopen video.
-* Removal of non function eye tracking to avoid confusion (eye tracking to be added in 0.9 or 1.0 depending on development of pretrained model).
-* Improved UI feedback for certain actions such as training or alerts when creating duplicate files.
-* Better automatic enabling and disabling of buttons/options that would lead to crashes if pressed at times prior to intended time.
-* Improved handling of video with different frame rates
-* Option to open 'previous model' instead of having to manually selected each time when using a previously prepared model
-* Minor bug fixes and UI clean up.
-* New default training assets with texturing
+# 0.9 Release Notes
+* New workflow for setting keyposes
 
 # Overview
 This a python based tool for finding coefficients for facial animation from RGB video. Coefficients can be exported as a numpy save file (for importing into Blender for example) but can also stream into Unreal Engine (or elsewhere) via OSC.
