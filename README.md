@@ -6,7 +6,7 @@ Hi there! Here you can find code for StrongTrack, a tool for landmark annotation
 
 **This tool is still at an early stage of development by a non-professional. Although I have put it through its paces as thoroughly as I can, you use this software at your own risk (see license for more)**
 
-![Screenshot](https://github.com/rwsarmstrong/strongtrack/blob/0.8/0.8/images/screenshot.jpg)
+![Screenshot](https://github.com/rwsarmstrong/strongtrack/blob/0.9/0.9/images/screenshot09.jpg)
 
 # 0.9 Release Notes
 * New workflow for setting keyposes
