@@ -1,6 +1,8 @@
 # StrongTrack v0.8
 
-Download the windows 10, (64 bit only) version [here](https://drive.google.com/file/d/1RSHuZtHB_VTBN37-PuapUriQn49aI6jJ/view?usp=sharing) (google drive. 114 MB zip).
+There is a 0.9 preview branch [here](https://github.com/rwsarmstrong/strongtrack/tree/0.9) . Functionality such as webcam support is not fully functioning in this build.
+
+Download the windows 10, (64 bit only) version of 0.8 [here](https://drive.google.com/file/d/1RSHuZtHB_VTBN37-PuapUriQn49aI6jJ/view?usp=sharing) (google drive. 114 MB zip).
 
 Example projects for UE4 and Blender may be found at the bottom of the page.
 
