@@ -1,6 +1,6 @@
 # StrongTrack v0.9 PREVIEW
 
-Download the windows 10, (64 bit only) version [here](https://drive.google.com/file/d/1_j7Q_YVGcGBoYeuHoHwWNci0nshvStoH/view?usp=sharing) (google drive. 119 MB zip).
+Download the windows 10 executable, (64 bit only) version [here](https://drive.google.com/file/d/1_j7Q_YVGcGBoYeuHoHwWNci0nshvStoH/view?usp=sharing) (google drive. 119 MB zip).
 
 Example projects for UE4 and Blender may be found at the bottom of the page.
 
