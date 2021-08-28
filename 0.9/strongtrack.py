@@ -1496,7 +1496,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             check = rx.verifyXML(fileName)
             if check == True:
                 self.xml_path = fileName
-
+                self.project_folder,_ = os.path.split(fileName)
                 self.project_name = os.path.splitext(os.path.split(fileName)[1])[0]
                 self.project_name = self.project_name[:-7]
 
@@ -1543,7 +1543,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.resetLandmarkKeyposeLabels()
 
-        self.predictor_name = 'projects/' + self.project_name + '_model.dat'
+        #self.predictor_name = self.project_folder' + self.project_name + '_model.dat'
+        self.predictor_name = os.path.join(self.project_folder,self.project_name)+'_model.dat'
 
         # Determine the nature of the provided xml file (or generate one if necessary)
         try:
@@ -2050,7 +2051,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         points = getPointsWebcamScale(shape, factor)
 
                     overcoeffs, brow_coeffs, _, _ = decomp.findCoeffsAll2(points,self.keyposes, self.keyposes_brow)
-                    barmorphs = np.tensordot(overcoeffs, self.cindices, axes=1)
+                    barmorphs = np.tensordot(overcoeffs, self.cindices, axes=1)[0]
                     #morphs = coeffsToMorphs(mouth_coeffs, brow_coeffs, points)
                     morphs_store.append(barmorphs)
 
@@ -2058,7 +2059,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     break
 
-            morphs_store = np.array(morphs_store[0])
+            morphs_store = np.array(morphs_store)
 
             np.savetxt(fileName, morphs_store)
 
